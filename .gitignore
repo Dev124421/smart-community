@@ -1,0 +1,7 @@
+
+ml_service/data/
+ml_service/venv/
+__pycache__/
+.env
+node_modules/
+*.joblib
