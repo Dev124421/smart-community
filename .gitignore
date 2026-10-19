@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Dataset and generated models
+ml_service/data/
+ml-service/data/
+ml_service/models/
+ml-service/models/
