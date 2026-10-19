@@ -1,7 +1,11 @@
-
-ml_service/data/
-ml_service/venv/
+# Python
 __pycache__/
-.env
-node_modules/
-*.joblib
+*.py[cod]
+.venv/
+venv/
+
+# Dataset and generated models
+ml_service/data/
+ml-service/data/
+ml_service/models/
+ml-service/models/
