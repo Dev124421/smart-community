@@ -111,11 +111,14 @@ const registerUser = async (req, res) => {
         });
 
         try {
-            await sendEmail(
-                email,
-                "Verify your CSI account",
-                `Your OTP is ${otp}. It expires in 5 minutes.`
-            );
+            await sendEmail({
+            to: email,
+            subject: "Verify your Smart Community account",
+            textContent: `Your OTP is ${otp}. It expires in 5 minutes.`,
+            htmlContent: `         <h2>Smart Community</h2>         <p>Your email verification OTP is:</p>         <h1>${otp}</h1>         <p>This OTP expires in 5 minutes.</p>         <p>Do not share this code with anyone.</p>
+    `
+});
+
         } catch (error) {
             // Remove the account if the verification email cannot be sent
             await User.findByIdAndDelete(user._id);
@@ -292,11 +295,14 @@ const resendOTP = async (req, res) => {
         await user.save();
 
         try {
-            await sendEmail(
-                email,
-                "Your new CSI verification OTP",
-                `Your new OTP is ${otp}. It expires in 5 minutes.`
-            );
+            await sendEmail({
+            to: email,
+            subject: "Your new Smart Community verification OTP",
+            textContent: `Your new OTP is ${otp}. It expires in 5 minutes.`,
+            htmlContent: `         <h2>Smart Community</h2>         <p>Your new email verification OTP is:</p>         <h1>${otp}</h1>         <p>This OTP expires in 5 minutes.</p>         <p>Do not share this code with anyone.</p>
+    `
+});
+
         } catch (error) {
             console.error("Resend OTP email error:", error.message);
 
