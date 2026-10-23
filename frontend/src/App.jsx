@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LoginPage from './pages/LoginPage'; 
 import SignupPage from './pages/SignupPage';
 import Dashboard from './pages/Dashboard';
 
 function App() {
-  const [currentForm, setCurrentForm]=useState("dashboard");
+  const [currentForm, setCurrentForm] = useState("login");
 
   const toggleForm =(formName)=>{
     setCurrentForm(formName);

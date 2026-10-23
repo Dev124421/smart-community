@@ -20,9 +20,9 @@ const Dashboard = () => {
           <div className="nav-item">⚙️ Settings</div>
         </nav>
         <div className="sidebar-profile">
-          <div className="avatar">T</div>
+          <div className="avatar">U</div>
           <div>
-            <div style={{ fontWeight: 'bold', fontSize: '0.875rem' }}>Tarun</div>
+            <div style={{ fontWeight: 'bold', fontSize: '0.875rem' }}>User</div>
             <div style={{ color: '#A3AED0', fontSize: '0.75rem' }}>B.Tech 3rd Sem</div>
           </div>
         </div>
@@ -38,9 +38,9 @@ const Dashboard = () => {
           <div className="top-nav-actions">
             <span style={{ cursor: 'pointer' }}>🔔</span>
             <div className="sidebar-profile" style={{ border: 'none', padding: 0, marginTop: 0, color: '#1E234C' }}>
-              <div className="avatar">T</div>
+              <div className="avatar">U</div>
               <div>
-                <div style={{ fontWeight: 'bold', fontSize: '0.875rem' }}>Tarun</div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.875rem' }}>User</div>
                 <div style={{ color: '#8F9BBA', fontSize: '0.75rem' }}>B.Tech 3rd Sem</div>
               </div>
             </div>
@@ -53,7 +53,7 @@ const Dashboard = () => {
           <div className="left-column">
             
             <div className="welcome-banner">
-              <h1>Good Morning, Tarun!</h1>
+              <h1>Good Morning, User!</h1>
               <p>Explore more communities, stay updated and be a part of meaningful discussions.</p>
             </div>
 
@@ -107,7 +107,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="community-card">
-                  <div className="card-icon" style={{ background: '#FFF4E5', color: '#DD6B20' }}>📐</div>
+                  <div className="card-icon" style={{ background: '#FFF4E5', color: '#DD6B20' }}>✏️</div>
                   <h3 className="card-title">UI/UX design</h3>
                   <div className="card-footer">
                     <span className="member-count">👥 98 members</span>

@@ -1,161 +1,433 @@
-.signup-wrapper {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f4ef;
-  padding: 1rem;
-  font-family: system-ui, -apple-system, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.signup-card {
-  display: flex;
+html,
+body {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  max-width: 900px;
-  min-height: 550px;
-  background-color: #ffffff;
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  height: 100%;
   overflow: hidden;
 }
 
-.left-panel {
-  display: none;
-  width: 50%;
-  background-color: #e8e6fa;
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
-.right-panel {
-  width: 100%;
-  padding: 2.5rem;
+/* Page wrapper with #101010 background and strictly no scroll on standard viewports */
+.signup-wrapper {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  background-color: #101010;
+  position: relative;
+  overflow: hidden;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Brand logo and name in the top-left corner */
+.signup-top-logo {
+  position: absolute;
+  top: 2rem;
+  left: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 20;
+  cursor: pointer;
+  user-select: none;
+}
+
+.signup-top-logo .logo-icon {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.signup-top-logo .logo-name {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Centered white signup card positioned above wave layers */
+.signup-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 426px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  padding: 1.65rem 2.25rem 1.4rem 2.25rem;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .header-section {
-  margin-bottom: 1.5rem;
+  text-align: left;
+  margin-bottom: 1.1rem;
 }
 
-.header-section h1 { 
-  font-size: 1.875rem; 
-  font-weight: 700; 
-  color: #1e234c; 
-  margin: 0 0 0.5rem 0; 
+.header-section h1 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: -0.02em;
 }
+
 .header-section p {
-   font-size: 0.875rem; 
-   font-weight: 600; 
-   color: #6b7280;
-    line-height: 1.5; 
-    margin: 0; 
+  font-size: 0.8125rem;
+  color: #555555;
+  line-height: 1.4;
+  margin: 0;
 }
 
-.signup-form { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 1rem; 
+/* Form error banner */
+.form-error-banner {
+  background-color: #fef2f2;
+  border: 1px solid #f87171;
+  color: #991b1b;
+  font-size: 0.78rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.85rem;
+  text-align: left;
+}
+
+/* Form controls */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  text-align: left;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .input-group label {
-  display: block; 
-  font-size: 0.8125rem; 
-  font-weight: 700; 
-  color: #545776; 
-  margin-bottom: 0.375rem; 
-}
-.input-group input { 
-  width: 100%; 
-  padding: 0.625rem 1rem; 
-  border: 1px solid #e5e7eb; 
-  border-radius: 0.375rem;
-   font-size: 0.875rem;
-    color: #1f2937; 
-    box-sizing: border-box; 
-    transition: 0.2s; 
-}
-.input-group input::placeholder{ 
-  color: #9ca3af; 
-  font-weight: 500; 
-}
-.input-group input:focus{ 
-  outline: none; 
-  border-color: #472d5b; 
-  box-shadow: 0 0 0 2px rgba(71, 45, 91, 0.2); 
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
 }
 
-.btn-primary{
+.input-wrapper {
+  position: relative;
   width: 100%;
-  background-color: #472d5b;
-  color: #ffffff; 
-  font-weight: 600; 
-  padding: 0.75rem; 
-  margin-top: 0.5rem; 
-  border: none; 
-  border-radius: 0.375rem; 
-  cursor: pointer; 
-  transition: 0.2s; 
+  display: flex;
+  align-items: center;
 }
 
-.btn-primary:hover { 
-  background-color: #382348; 
+.input-wrapper input {
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  color: #111111;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.btn-google {
-   width: 100%; 
-   background-color: #ffffff; 
-   color: #1e234c; 
-   font-weight: 700; 
-   font-size: 0.875rem; 
-   padding: 0.75rem; 
-   border: 1px solid #e5e7eb; 
-   border-radius: 0.375rem; 
-   cursor: pointer; 
-   transition: 0.2s; 
+.input-wrapper input.input-error {
+  border-color: #dc2626;
+  background-color: #fffaf0;
 }
 
-.btn-google:hover{
-  background-color: #f9fafb; 
+.input-wrapper input::placeholder {
+  color: #6b7280;
+  font-weight: 400;
 }
 
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #101010;
+  box-shadow: 0 0 0 2px rgba(16, 16, 16, 0.1);
+}
+
+.input-wrapper input.input-error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15);
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.72rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.password-wrapper input {
+  padding-right: 2.5rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: #111111;
+}
+
+/* Black Create Account Button with arrow */
+.btn-primary {
+  width: 100%;
+  background-color: #101010;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.65rem;
+  border: 1px solid #101010;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #222222;
+  border-color: #222222;
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+/* Or continue with Divider */
 .divider {
-   display: flex; 
-   align-items: center; 
-   margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  margin: 0.9rem 0 0.8rem 0;
 }
-.divider::before, .divider::after{ content: ""; 
+
+.divider::before,
+.divider::after {
+  content: "";
   flex: 1;
-  border-top: 1px solid #e5e7eb; 
-}
-.divider span{ 
-  margin: 0 1rem; 
-  font-size: 0.75rem; 
-  font-weight: 700; 
-  color: #9ca3af; 
+  border-top: 1px solid #737373;
 }
 
-.login-text{
-  text-align: center; 
-  margin-top: 1.5rem; 
-  font-size: 0.875rem; 
-  font-weight: 600; 
-  color: #545776; 
-}
-.login-text a{
-  color: #472d5b;
-  font-weight: 700; 
-  text-decoration: none; 
-  margin-left: 0.25rem; 
-}
-.login-text a:hover{ 
-  text-decoration: underline; 
+.divider span {
+  margin: 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #374151;
 }
 
-@media(min-width: 768px){
-  .left-panel { 
-    display: block; 
+/* Social login: Google & Apple only, circular buttons */
+.social-login-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+.btn-social {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #efeeee;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  padding: 0;
+}
+
+.btn-social:hover {
+  background-color: #e5e4e4;
+  transform: translateY(-1px);
+}
+
+.btn-social:active {
+  transform: translateY(0);
+}
+
+.btn-social svg {
+  display: block;
+}
+
+/* Bottom login text (left-aligned, purple Log in) */
+.login-text {
+  text-align: left;
+  margin-top: 0.95rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.login-text a {
+  color: #744fb5;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 0.25rem;
+}
+
+.login-text a:hover {
+  text-decoration: underline;
+}
+
+/* Layered Waves container across bottom of screen */
+.waves-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wave-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 1440px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Layer 1: Upper grey wave (Vector.png) */
+.wave-upper {
+  bottom: 75px;
+  height: 240px;
+  z-index: 1;
+  object-fit: fill;
+  opacity: 0.95;
+}
+
+/* Layer 2: Remaining grey wave layer (Vector (1).png) */
+.wave-middle {
+  bottom: 30px;
+  height: 240px;
+  z-index: 2;
+  object-fit: fill;
+  opacity: 0.95;
+}
+
+/* Layer 3: Mascot character positioned between waves, exactly left of card */
+.wave-character {
+  position: absolute;
+  left: calc(50% - 325px);
+  bottom: 152px;
+  width: 56px;
+  height: auto;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/* Layer 4: Bottom white wave (White wave.png) */
+.wave-bottom {
+  bottom: 0;
+  height: 215px;
+  z-index: 4;
+  object-fit: fill;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .wave-character {
+    left: calc(50% - 295px);
   }
-  .right-panel { 
-    width: 50%; padding: 3rem; 
+}
+
+@media (max-width: 768px) {
+  .signup-top-logo {
+    top: 1.25rem;
+    left: 1.25rem;
+  }
+  
+  .signup-top-logo .logo-icon {
+    height: 30px;
+  }
+  
+  .signup-top-logo .logo-name {
+    height: 20px;
+  }
+  
+  .signup-card {
+    padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+    max-width: 380px;
+  }
+  
+  .waves-container {
+    height: 220px;
+  }
+  
+  .wave-upper {
+    bottom: 45px;
+    height: 170px;
+  }
+  
+  .wave-middle {
+    bottom: 20px;
+    height: 180px;
+  }
+  
+  .wave-bottom {
+    height: 160px;
+  }
+  
+  .wave-character {
+    left: 20px;
+    bottom: 110px;
+    width: 48px;
+  }
+}
+
+@media (max-height: 620px) {
+  .signup-wrapper {
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 4.5rem;
+    padding-bottom: 2rem;
   }
 }
