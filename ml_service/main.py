@@ -1,52 +1,49 @@
-import json
+import sys
 from pathlib import Path
-
-import joblib
 from fastapi import FastAPI
-from pydantic import BaseModel
-from scipy.sparse import hstack
+from pydantic import BaseModel, Field
 
-from preprocess import clean_text
+sys.path.insert(0, str(Path(__file__).parent / "src"))   # finds predict.py and cleaning.py
+from predict import predict
 
-BASE = Path(__file__).parent / "models"
-word_vec, char_vec, models = joblib.load(BASE / "baseline.joblib")
-thresholds = json.loads((BASE / "thresholds.json").read_text())
-LABELS = list(models.keys())
-MODEL_VERSION = "tfidf-logreg-v1"
+MODEL_VERSION = "tfidf-logreg-v2"   
 
-app = FastAPI(title="Smart Community ML Service")
+app = FastAPI(title="Smart Community moderation service")
 
+class Comment(BaseModel):
+    text: str = Field(..., max_length=5000)
 
-class Message(BaseModel):
-    text: str
-
+def moderate(text):
+    r = predict(text)                                    # the model never rejects: allow or hold only
+    top = max(r["toxicity_scores"].values(), default=0.0)
+    is_profane = len(r["flagged_labels"]) > 0
+    spam = r["spam_score"]
+    return {
+        "text": text,
+        "spam_check": {
+            "is_spam": r["is_spam"],
+            "confidence": round(spam if r["is_spam"] else 1 - spam, 4),
+            "spam_score": round(spam, 4),
+        },
+        "profanity_check": {
+            "is_profane": is_profane,
+            "confidence": round(top if is_profane else 1 - top, 4),
+            "top_score": round(top, 4),
+        },
+        "outcome": r["outcome"],                         # "allow" or "hold"
+        "flagged_labels": r["flagged_labels"],
+        "scores": r["toxicity_scores"],
+        "model_version": MODEL_VERSION,
+    }
 
 @app.get("/health")
 def health():
     return {"status": "ok", "model_version": MODEL_VERSION}
 
+@app.post("/check-comment")       
+def check_comment(c: Comment):
+    return moderate(c.text)
 
-@app.post("/predict")
-def predict(msg: Message):
-    clean = clean_text(msg.text)
-    X = hstack([word_vec.transform([clean]), char_vec.transform([clean])]).tocsr()
-
-    scores = {label: float(models[label].predict_proba(X)[0, 1]) for label in LABELS}
-
-    outcome = "allow"
-    for label, score in scores.items():
-        reject_t = thresholds[label]["reject"]
-        if reject_t is not None and score >= reject_t:
-            outcome = "reject"
-            break
-        if score >= thresholds[label]["hold"]:
-            outcome = "hold"
-
-    top_label = max(scores, key=scores.get)
-    return {
-        "outcome": outcome,
-        "top_label": top_label,
-        "confidence": round(scores[top_label], 4),
-        "scores": {k: round(v, 4) for k, v in scores.items()},
-        "model_version": MODEL_VERSION,
-    }
+@app.post("/predict")              
+def predict_route(c: Comment):
+    return moderate(c.text)
