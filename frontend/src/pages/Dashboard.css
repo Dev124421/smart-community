@@ -282,3 +282,85 @@
   background-color: #E9E3FF;
   color: var(--royal-purple);
 }
+
+/* =========================================
+   RESPONSIVE DASHBOARD LAYOUT
+   ========================================= */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+    padding: 1.25rem 1rem;
+  }
+
+  .content-wrapper {
+    flex-direction: column;
+    padding: 0 1.25rem 1.5rem 1.25rem;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .search-bar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .nav-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .nav-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .sidebar-profile {
+    display: none;
+  }
+
+  .top-nav {
+    padding: 0 1rem;
+    height: auto;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .content-wrapper {
+    padding: 0 1rem 1.5rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-banner {
+    padding: 1.25rem;
+  }
+
+  .welcome-banner h1 {
+    font-size: 1.35rem;
+  }
+}
