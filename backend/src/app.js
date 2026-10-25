@@ -19,6 +19,7 @@ message: "Welcome to the CSI Auth System API"
 });
 
 app.get("/api/health", (req, res) => {
+console.log("health ROUTE HIT");
 res.status(200).json({
 message: "Backend is healthy"
 });

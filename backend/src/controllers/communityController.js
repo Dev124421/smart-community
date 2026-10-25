@@ -8,9 +8,30 @@ const Community = require("../models/community");
 // Show public communities and indicate membership.
 
 const getCommunities = async (req, res) => {
-  try {
-    const userId = req.user.sub;
+  console.log("[GET COMMUNITIES] Request received");
 
+  try {
+    // Check whether authentication middleware supplied a user.
+    const userId = req.user?.sub;
+
+    console.log("[GET COMMUNITIES] User ID:", userId);
+
+    // Verify that the database connection is available.
+    const mongoose = require("mongoose");
+
+    if (mongoose.connection.readyState !== 1) {
+      console.error(
+        "[GET COMMUNITIES] MongoDB is not connected. State:",
+        mongoose.connection.readyState
+      );
+
+      return res.status(503).json({
+        success: false,
+        message: "Database is not connected",
+      });
+    }
+
+    // Fetch public communities from MongoDB.
     const communities = await Community.find({
       visibility: "public",
     })
@@ -18,18 +39,38 @@ const getCommunities = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    const result = communities.map((community) => ({
-      _id: community._id,
-      name: community.name,
-      description: community.description,
-      category: community.category,
-      owner: community.owner,
-      memberCount: community.members.length,
-      isMember: community.members.some(
-        (memberId) => memberId.toString() === userId
-      ),
-      createdAt: community.createdAt,
-    }));
+    console.log(
+      "[GET COMMUNITIES] Communities found:",
+      communities.length
+    );
+
+    // Build a safe response for the dashboard.
+    const result = communities.map((community) => {
+      const members = Array.isArray(community.members)
+        ? community.members
+        : [];
+
+      const isMember = userId
+        ? members.some(
+            (memberId) =>
+              memberId != null &&
+              memberId.toString() === userId.toString()
+          )
+        : false;
+
+      return {
+        _id: community._id,
+        name: community.name,
+        description: community.description,
+        category: community.category,
+        owner: community.owner,
+        memberCount: members.filter(
+          (memberId) => memberId != null
+        ).length,
+        isMember,
+        createdAt: community.createdAt,
+      };
+    });
 
     return res.status(200).json({
       success: true,
@@ -37,11 +78,14 @@ const getCommunities = async (req, res) => {
       communities: result,
     });
   } catch (error) {
-    console.error("Get communities error:", error);
+    console.error("[GET COMMUNITIES] ERROR:", error);
 
     return res.status(500).json({
       success: false,
       message: "Failed to fetch communities",
+      ...(process.env.NODE_ENV !== "production" && {
+        debug: error.message,
+      }),
     });
   }
 };
@@ -170,7 +214,7 @@ const joinCommunity = async (req, res) => {
     });
   } catch (error) {
     console.error("Join community error:", error);
-
+    
     return res.status(500).json({
       success: false,
       message: "Failed to join community",
