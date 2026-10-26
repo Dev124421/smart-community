@@ -15,7 +15,9 @@ const LoginPage = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Login Data Submitted: ", { email, password, rememberMe });
-    alert("Login Successful! (Check console for data)");
+    if (props.onFormSwitch) {
+      props.onFormSwitch('dashboard');
+    }
   };
 
   const handleSocialLogin = (provider) => {
@@ -80,12 +82,12 @@ const LoginPage = (props) => {
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
-                  <svg className="eye-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#71717a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="eye-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#777B85" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                     <circle cx="12" cy="12" r="3" />
                   </svg>
                 ) : (
-                  <svg className="eye-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#71717a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="eye-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#777B85" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                     <line x1="1" y1="1" x2="23" y2="23" />
                   </svg>
@@ -162,7 +164,7 @@ const LoginPage = (props) => {
       </div>
 
       {/* Waves Section */}
-      <div className="waves-container">
+      {/* <div className="waves-container">
         <svg
           className="waves-svg"
           viewBox="0 0 1440 445"
@@ -174,7 +176,7 @@ const LoginPage = (props) => {
           <image href={vectorLower} x="0" y="112" width="1440" height="270" />
           <image href={whiteWave} x="0" y="215" width="1440" height="230" />
         </svg>
-      </div>
+      </div> */}
     </div>
   );
 };

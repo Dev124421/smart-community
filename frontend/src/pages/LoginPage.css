@@ -327,9 +327,6 @@ body {
 }
 
 /* Layered Waves container */
-/* =========================================
-   RESPONSIVE WAVES (SEAMLESS SVG IMPLEMENTATION)
-   ========================================= */
 .waves-container {
   position: absolute;
   bottom: 0;
