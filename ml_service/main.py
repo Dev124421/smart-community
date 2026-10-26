@@ -35,7 +35,24 @@ def moderate(text):
         "scores": r["toxicity_scores"],
         "model_version": MODEL_VERSION,
     }
-
+@app.get("/")
+def root():
+    return {
+        "application": "Smart Community Moderation API",
+        "status": "ready",
+        "message": "API is running and ready for predictions.",
+        "endpoints": {
+            "health": "/health",
+            "check_comment": {
+                "path": "/check-comment",
+                "method": "POST",
+                "example_request": {"text": "Thanks for helping me."},
+            },
+            "predict": {"path": "/predict", "method": "POST"},
+            "documentation": "/docs",
+        },
+        "model_version": MODEL_VERSION,
+    }
 @app.get("/health")
 def health():
     return {"status": "ok", "model_version": MODEL_VERSION}
