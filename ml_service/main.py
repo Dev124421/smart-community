@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 sys.path.insert(0, str(Path(__file__).parent / "src"))   # finds predict.py and cleaning.py
 from predict import predict
 
-MODEL_VERSION = "tfidf-logreg-v2"   
+MODEL_VERSION = "tfidf-logreg-v1"   
 
 app = FastAPI(title="Smart Community moderation service")
 
