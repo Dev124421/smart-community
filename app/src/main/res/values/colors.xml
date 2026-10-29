@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#101010</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple">#6239AC</color>
-    <color name="text">#686677</color>
-    <color name="screen_bg">#262626</color>
-    <color name="pink">#B794F6</color>
-    <color name="green">#23A559</color>
+    <color name="warm_white">#FAF8F3</color>
+    <color name="soft_border">#E4E2DE</color>
+    <color name="purple">#B794F6</color>
+    <color name="Butter_yellow">#FFD166</color>
+    <color name="pink">#FF8FA3</color>
+    <color name="green">#80D8B0</color>
 </resources>

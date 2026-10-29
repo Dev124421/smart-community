@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121214"
-    android:paddingHorizontal="16dp"
-    android:paddingTop="20dp"
+    android:background="@color/black"
     android:id="@+id/main"
-    android:paddingBottom="24dp">
-
-    <!-- Back Arrow Button -->
+    android:paddingHorizontal="25dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
     <ImageView
         android:id="@+id/btn_back"
         android:layout_width="32dp"
@@ -22,9 +20,8 @@
         android:padding="4dp"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Screen Title -->
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
@@ -32,14 +29,12 @@
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Tell Us More About Your Server"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_back" />
-
-    <!-- Subtitle / Explanation -->
     <TextView
         android:id="@+id/tv_subtitle"
         android:layout_width="0dp"
@@ -49,13 +44,11 @@
         android:gravity="center"
         android:lineSpacingExtra="2dp"
         android:text="In order to help you with your setup, is your new server for just a few friends or a large community?"
-        android:textColor="@color/white"
+        android:textColor="@color/soft_border"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-    <!-- Option 1: For me and friends -->
     <LinearLayout
         android:id="@+id/btn_for_friends"
         android:layout_width="match_parent"
@@ -83,7 +76,7 @@
             android:layout_marginStart="14dp"
             android:layout_weight="1"
             android:text="For me and friends"
-            android:textColor="@color/white"
+            android:textColor="@color/warm_white"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -91,10 +84,8 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/forward_arrow"
-            app:tint="#A0FFFFFF" />
+            app:tint="@color/soft_border" />
     </LinearLayout>
-
-    <!-- Option 2: For a club or community -->
     <LinearLayout
         android:id="@+id/btn_for_community"
         android:layout_width="match_parent"
@@ -122,7 +113,7 @@
             android:layout_marginStart="14dp"
             android:layout_weight="1"
             android:text="For a club or community"
-            android:textColor="@color/white"
+            android:textColor="@color/warm_white"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -130,7 +121,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/forward_arrow"
-            app:tint="#A0FFFFFF" />
+            app:tint="@color/soft_border" />
     </LinearLayout>
 
     <LinearLayout
@@ -143,12 +134,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_for_community">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not sure? You can"
-        android:textColor="@color/white"
-        android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not sure? You can"
+            android:textColor="@color/soft_border"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_skip_prompt"
@@ -166,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:text="this question for now."
-            android:textColor="@color/white"
+            android:textColor="@color/soft_border"
             android:textSize="13sp" />
 
     </LinearLayout>

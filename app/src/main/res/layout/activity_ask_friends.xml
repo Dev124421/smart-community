@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121214"
-    android:paddingHorizontal="20dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="24dp">
-
-    <!-- Top Action: Skip -->
+    android:background="@color/black"
+    android:paddingHorizontal="25dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
     <TextView
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
@@ -19,27 +17,23 @@
         android:focusable="true"
         android:padding="8dp"
         android:text="Skip"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Screen Title -->
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Help your friends find you"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_skip" />
-
-    <!-- Subtitle / Description -->
     <TextView
         android:id="@+id/tv_subtitle"
         android:layout_width="0dp"
@@ -49,13 +43,11 @@
         android:gravity="center"
         android:lineSpacingExtra="2dp"
         android:text="Let people who have your email address or phone number search for you on Yappy."
-        android:textColor="#A0FFFFFF"
+        android:textColor="@color/soft_border"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-    <!-- Center Character Illustration -->
     <ImageView
         android:id="@+id/iv_illustration"
         android:layout_width="160dp"
@@ -65,8 +57,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
-
-    <!-- Settings / Learn More Note -->
     <TextView
         android:id="@+id/tv_learn_more_prompt"
         android:layout_width="0dp"
@@ -76,13 +66,11 @@
         android:focusable="true"
         android:gravity="center"
         android:text="This can be changed anytime in Settings. Learn more"
-        android:textColor="#A0FFFFFF"
+        android:textColor="@color/soft_border"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_illustration" />
-
-    <!-- Bottom CTA: Allow People to Find Me (Disabled/Dark State) -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_allow_find"
         android:layout_width="match_parent"

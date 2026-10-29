@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chat_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E1F22"
-    android:orientation="vertical">
-
-    <!-- Header -->
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#2B2D31"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="25dp">
 
         <TextView
             android:id="@+id/chat_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="←"
-            android:textColor="@color/white"
+            android:text="â†"
+            android:textColor="@color/warm_white"
             android:textSize="20sp"
             android:paddingEnd="16dp" />
 
@@ -32,28 +32,26 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Chat"
-            android:textColor="@color/white"
+            android:textColor="@color/warm_white"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
-
-    <!-- Message List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="12dp"
         android:clipToPadding="false" />
-
-    <!-- Input Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2B2D31"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="12dp">
 
         <EditText
             android:id="@+id/et_message"
@@ -66,8 +64,8 @@
             android:inputType="text"
             android:maxLines="4"
             android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="#9E9E9E"
+            android:textColor="@color/warm_white"
+            android:textColorHint="@color/soft_border"
             android:textSize="14sp" />
 
         <Button
@@ -75,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:backgroundTint="#7C4DFF"
+            android:backgroundTint="@color/purple"
             android:text="Send"
             android:textColor="@color/white" />
     </LinearLayout>

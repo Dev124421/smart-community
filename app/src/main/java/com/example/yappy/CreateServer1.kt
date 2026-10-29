@@ -44,12 +44,10 @@ class CreateServer1 : AppCompatActivity() {
             R.id.btn_local_community
         )
 
-        // Create a server from scratch
         createOwn.setOnClickListener {
             openServerTypeScreen("Custom")
         }
 
-        // Select a server template
         gaming.setOnClickListener {
             openServerTypeScreen("Gaming")
         }
@@ -74,18 +72,10 @@ class CreateServer1 : AppCompatActivity() {
             openServerTypeScreen("Local Community")
         }
 
-        // Join an existing server
         joinServer.setOnClickListener {
-            Toast.makeText(
-                this,
-                "Join Server selected",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            // Add your Join Server screen here when available.
+            startActivity(Intent(this, AddPeople::class.java))
         }
 
-        // Close button
         findViewById<ImageView>(R.id.btn_close)
             .setOnClickListener {
                 finish()

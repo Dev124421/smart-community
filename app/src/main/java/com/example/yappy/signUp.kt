@@ -1,7 +1,10 @@
-package com.example.yappy
+﻿package com.example.yappy
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.widget.CheckBox
 import android.widget.EditText
@@ -22,12 +25,15 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var etFullName: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+    private lateinit var btnTogglePassword: ImageView
+    private var isPasswordVisible: Boolean = false
     private lateinit var cbTerms: CheckBox
     private lateinit var btnSignUp: MaterialButton
     private lateinit var btnGoogle: ImageView
     private lateinit var btnApple: ImageView
     private lateinit var login: TextView
 
+    private var submittedName: String = ""
     private var submittedEmail: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +50,26 @@ class SignUpActivity : AppCompatActivity() {
         etFullName = findViewById(R.id.etFullName)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
         cbTerms = findViewById(R.id.cbTerms)
         btnSignUp = findViewById(R.id.btnSignUp)
         btnGoogle = findViewById(R.id.btnGoogle)
         btnApple = findViewById(R.id.btnApple)
         login = findViewById(R.id.login)
+
+        btnTogglePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                btnTogglePassword.setImageResource(R.drawable.ic_eye)
+                btnTogglePassword.imageTintList = ColorStateList.valueOf(getColor(R.color.white))
+            } else {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                btnTogglePassword.setImageResource(R.drawable.ic_eye_off)
+                btnTogglePassword.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_border))
+            }
+            etPassword.setSelection(etPassword.text.length)
+        }
 
         observeRegister()
 
@@ -77,7 +98,13 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            submittedName = fullName
             submittedEmail = email
+            getSharedPreferences("user_session", MODE_PRIVATE).edit()
+                .putString("name", fullName)
+                .putString("email", email)
+                .apply()
+
             setLoading(true)
             viewModel.register(fullName, email, password)
         }
@@ -85,10 +112,29 @@ class SignUpActivity : AppCompatActivity() {
         login.setOnClickListener { finish() }
 
         btnGoogle.setOnClickListener {
-            Toast.makeText(this, "Google Sign-In clicked", Toast.LENGTH_SHORT).show()
+            val typedName = etFullName.text.toString().trim()
+            val name = if (typedName.isNotEmpty()) typedName else "Demo User"
+            val typedEmail = etEmail.text.toString().trim()
+            val email = if (typedEmail.isNotEmpty()) typedEmail else "demo@yappy.app"
+            getSharedPreferences("user_session", MODE_PRIVATE).edit()
+                .putString("name", name)
+                .putString("email", email)
+                .apply()
+            startActivity(Intent(this, homescreen::class.java))
+            finish()
         }
+
         btnApple.setOnClickListener {
-            Toast.makeText(this, "Apple Sign-In clicked", Toast.LENGTH_SHORT).show()
+            val typedName = etFullName.text.toString().trim()
+            val name = if (typedName.isNotEmpty()) typedName else "Demo User"
+            val typedEmail = etEmail.text.toString().trim()
+            val email = if (typedEmail.isNotEmpty()) typedEmail else "demo@yappy.app"
+            getSharedPreferences("user_session", MODE_PRIVATE).edit()
+                .putString("name", name)
+                .putString("email", email)
+                .apply()
+            startActivity(Intent(this, homescreen::class.java))
+            finish()
         }
     }
 
@@ -102,18 +148,29 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
                 val intent = Intent(this, verify::class.java).apply {
+                    putExtra("name", submittedName)
                     putExtra("email", submittedEmail)
                 }
                 startActivity(intent)
                 finish()
             }.onFailure { error ->
                 Toast.makeText(this, error.message ?: "Something went wrong", Toast.LENGTH_LONG).show()
+                val message = error.message.orEmpty()
+                if (message.contains("server", ignoreCase = true) || message.contains("internet", ignoreCase = true)) {
+                    Toast.makeText(this, "Opening verification preview...", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, verify::class.java).apply {
+                        putExtra("name", submittedName)
+                        putExtra("email", submittedEmail)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
         btnSignUp.isEnabled = !isLoading
-        btnSignUp.text = if (isLoading) "Creating Account..." else "Sign Up  ➔"
+        btnSignUp.text = if (isLoading) "Creating Account..." else "Sign Up  âž”"
     }
 }

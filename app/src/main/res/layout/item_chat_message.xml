@@ -1,33 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/msg_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="6dp"
-    android:orientation="horizontal">
+    android:gravity="top|start"
+    android:orientation="horizontal"
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="8dp">
+    <FrameLayout
+        android:id="@+id/layout_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_circle_button">
 
+        <TextView
+            android:id="@+id/tv_avatar_initial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="D" />
+    </FrameLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:maxWidth="280dp">
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/warm_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="DevUser" />
+
+            <TextView
+                android:id="@+id/tv_msg_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/soft_border"
+                android:textSize="11sp"
+                tools:text="10:30 AM" />
+        </LinearLayout>
         <TextView
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_dark"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:layout_marginTop="4dp"
+            android:lineSpacingExtra="3dp"
+            android:textColor="@color/warm_white"
+            android:textSize="14sp"
+            tools:text="Hey everyone! This message appears on the left with the username above, just like Discord." />
 
-        <TextView
-            android:id="@+id/tv_msg_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="#9E9E9E"
-            android:textSize="10sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,20 +8,16 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="12dp">
-
-    <!-- Avatar / Initial -->
     <TextView
         android:id="@+id/tv_conv_initial"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/bg_circle_button"
+        android:background="@drawable/bg_avatar_green"
         android:gravity="center"
-        android:text="H"
-        android:textColor="@color/white"
+        android:text="B"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
-
-    <!-- Name & Last Message -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,7 +31,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/warm_white"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -46,17 +42,15 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/soft_border"
             android:textSize="13sp" />
     </LinearLayout>
-
-    <!-- Time -->
     <TextView
         android:id="@+id/tv_conv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/soft_border"
         android:textSize="12sp" />
 
 </LinearLayout>

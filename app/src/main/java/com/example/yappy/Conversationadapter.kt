@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yappy.R
 import com.example.yappy.model.Conversation
@@ -30,7 +31,10 @@ class ConversationAdapter(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val c = items[position]
-        holder.initial.text = c.name.trim().take(1).uppercase()
+        val firstLetter = c.name.trim().take(1).uppercase()
+        holder.initial.text = if (firstLetter.isNotBlank()) firstLetter else "?"
+        holder.initial.setBackgroundResource(R.drawable.bg_avatar_green)
+        holder.initial.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
         holder.name.text = c.name
         holder.last.text = c.lastMessage
         holder.time.text = c.time

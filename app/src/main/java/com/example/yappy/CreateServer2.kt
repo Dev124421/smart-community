@@ -36,7 +36,6 @@ class CreateServer2 : AppCompatActivity() {
             R.id.tv_skip_prompt
         )
 
-        // Handle system bar insets without replacing XML padding.
         ViewCompat.setOnApplyWindowInsetsListener(
             findViewById(R.id.main)
         ) { view, insets ->
@@ -55,22 +54,18 @@ class CreateServer2 : AppCompatActivity() {
             insets
         }
 
-        // Back to CreateServer1
         backButton.setOnClickListener {
             finish()
         }
 
-        // Server for friends
         friendsButton.setOnClickListener {
             openCreateServerScreen("Friends")
         }
 
-        // Server for a community
         communityButton.setOnClickListener {
             openCreateServerScreen("Community")
         }
 
-        // Skip this question
         skipButton.setOnClickListener {
             openCreateServerScreen("Not specified")
         }

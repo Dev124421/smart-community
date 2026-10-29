@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channel_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:layout_marginVertical="2dp"
+    android:background="@drawable/bg_template_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
+    <ImageView
+        android:id="@+id/iv_channel_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_hashtag"
+        app:tint="@color/soft_border" />
+    <TextView
+        android:id="@+id/tv_channel_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/soft_border"
+        android:textSize="14.5sp"
+        android:textStyle="bold"
+        tools:text="general" />
+    <View
+        android:id="@+id/unread_dot"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/bg_circle_button"
+        android:backgroundTint="@color/pink"
+        android:visibility="gone" />
+
+</LinearLayout>

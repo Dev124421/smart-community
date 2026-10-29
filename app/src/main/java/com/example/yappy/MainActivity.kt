@@ -1,7 +1,10 @@
 package com.example.yappy
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,15 +20,15 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModels()
     private lateinit var session: SessionManager
-
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+    private lateinit var btnTogglePassword: ImageView
+    private var isPasswordVisible: Boolean = false
     private lateinit var cbRememberMe: CheckBox
     private lateinit var forgotPass: TextView
     private lateinit var btnLogin: MaterialButton
     private lateinit var btnGoogle: ImageView
     private lateinit var signUp: TextView
-
     private var submittedEmail = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         session = SessionManager(this)
-
-        // Already logged in and chose "Remember me": skip the login screen
         if (session.shouldAutoLogin()) {
             startActivity(Intent(this, homescreen::class.java))
             finish()
@@ -45,13 +46,27 @@ class MainActivity : AppCompatActivity() {
 
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
         cbRememberMe = findViewById(R.id.cbRememberMe)
         forgotPass = findViewById(R.id.forgotPass)
         btnLogin = findViewById(R.id.btnLogin)
         btnGoogle = findViewById(R.id.btnGoogle)
         signUp = findViewById(R.id.signUp)
 
-        // Prefill email if another screen passed one in
+        btnTogglePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                btnTogglePassword.setImageResource(R.drawable.ic_eye)
+                btnTogglePassword.imageTintList = ColorStateList.valueOf(getColor(R.color.white))
+            } else {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                btnTogglePassword.setImageResource(R.drawable.ic_eye_off)
+                btnTogglePassword.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_border))
+            }
+            etPassword.setSelection(etPassword.text.length)
+        }
+
         intent.getStringExtra(EXTRA_USER_EMAIL)?.let { etEmail.setText(it) }
 
         observeLogin()
@@ -89,7 +104,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnGoogle.setOnClickListener {
-            Toast.makeText(this, "Google Sign-In Triggered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Continuing as Demo User to preview layouts", Toast.LENGTH_SHORT).show()
+            getSharedPreferences("user_session", MODE_PRIVATE).edit()
+                .putString("name", "Demo User")
+                .putString("email", "demo@yappy.app")
+                .apply()
+            startActivity(Intent(this, homescreen::class.java))
+            finish()
         }
     }
 
@@ -101,7 +122,6 @@ class MainActivity : AppCompatActivity() {
                 session.saveTokens(response.accessToken, response.refreshToken)
                 session.setRememberMe(cbRememberMe.isChecked)
 
-                // Save the email so the Account page can show it
                 getSharedPreferences("user_session", MODE_PRIVATE).edit()
                     .putString("email", submittedEmail)
                     .apply()
@@ -111,7 +131,6 @@ class MainActivity : AppCompatActivity() {
             }.onFailure { error ->
                 val message = error.message ?: "Login failed. Please try again."
 
-                // If the account isn't verified yet, send the user to the OTP screen
                 if (message.contains("verify", ignoreCase = true)) {
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
                     startActivity(Intent(this, verify::class.java).apply {

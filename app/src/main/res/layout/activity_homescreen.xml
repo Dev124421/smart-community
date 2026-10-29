@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,22 +6,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121214">
-
-    <!-- ================= LEFT SERVER RAIL ================= -->
+    android:background="@color/black"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
     <LinearLayout
         android:id="@+id/left_rail"
         android:layout_width="72dp"
         android:layout_height="0dp"
-        android:background="#121214"
+        android:background="@color/black"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingTop="36dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_account_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <!-- DM Icon (permanent) -->
         <FrameLayout
             android:id="@+id/btn_dm"
             android:layout_width="48dp"
@@ -37,8 +35,6 @@
                 android:src="@drawable/ic_dm"
                 app:tint="@color/white" />
         </FrameLayout>
-
-        <!-- Communities list (dynamic, fills the space between DM and Add) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_server_rail"
             android:layout_width="match_parent"
@@ -49,10 +45,7 @@
             android:paddingTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="4"
-            android:layout_marginLeft="8dp"
-            tools:listitem="@layout/item_server_icon" />
-
-        <!-- Add Server Button (permanent) -->
+            tools:listitem="@layout/item_rail_server" />
         <FrameLayout
             android:id="@+id/btn_add_server"
             android:layout_width="48dp"
@@ -60,7 +53,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/bg_card_dark"
-            android:backgroundTint="@color/pink"
             android:clickable="true"
             android:focusable="true">
 
@@ -72,7 +64,6 @@
                 app:tint="@color/white" />
         </FrameLayout>
     </LinearLayout>
-    <!-- ================= MAIN SCROLLABLE CONTENT ================= -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/main_scroll_content"
         android:layout_width="0dp"
@@ -89,27 +80,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="25dp"
             android:paddingTop="20dp"
-            android:paddingBottom="24dp">
-
-            <!-- Title -->
+            android:paddingBottom="25dp">
             <TextView
                 android:id="@+id/tv_title_servers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Servers"
-                android:textColor="@color/white"
+                android:textColor="@color/warm_white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
-
-            <!-- Subtitle -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Create a place for you and your friends"
-                android:textColor="#E0E0E0"
+                android:textColor="@color/soft_border"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
@@ -119,10 +106,8 @@
                 android:layout_marginTop="4dp"
                 android:lineSpacingExtra="2dp"
                 android:text="Servers are where you and your friends hang out. Make yours and start talking."
-                android:textColor="#9E9E9E"
+                android:textColor="@color/soft_border"
                 android:textSize="11.5sp" />
-
-            <!-- Horizontal Carousel for Templates (Hanging Out, Gaming, etc.) -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,8 +119,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <!-- Template Card 1 -->
                     <LinearLayout
                         android:layout_width="160dp"
                         android:layout_height="170dp"
@@ -155,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Hanging Out"
-                            android:textColor="@color/white"
+                            android:textColor="@color/warm_white"
                             android:textSize="13sp"
                             android:textStyle="bold" />
 
@@ -164,11 +147,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Discover new friends, exchange laughs, and make every hangout feel like time well spent."
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/soft_border"
                             android:textSize="9.5sp" />
                     </LinearLayout>
-
-                    <!-- Template Card 2 -->
                     <LinearLayout
                         android:layout_width="160dp"
                         android:layout_height="170dp"
@@ -188,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="Gaming"
-                            android:textColor="@color/white"
+                            android:textColor="@color/warm_white"
                             android:textSize="13sp"
                             android:textStyle="bold" />
 
@@ -197,19 +178,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Team up with friends, take on exciting challenges, and turn every match into a new memory."
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/soft_border"
                             android:textSize="9.5sp" />
                     </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
-
-            <!-- Action Buttons -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_create_server"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="18dp"
-                android:backgroundTint="#8B5CF6"
+                android:backgroundTint="@color/purple"
                 android:text="Create a server"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -227,14 +206,12 @@
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 app:cornerRadius="22dp" />
-
-            <!-- Section: Join Communities -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Join communities"
-                android:textColor="@color/white"
+                android:textColor="@color/warm_white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -243,10 +220,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Check out these servers we think you may like. Find game tips, teammates and more."
-                android:textColor="#9E9E9E"
+                android:textColor="@color/soft_border"
                 android:textSize="11.5sp" />
-
-            <!-- Community / Server RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_joined_communities"
                 android:layout_width="match_parent"
@@ -258,8 +233,6 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- ================= BOTTOM USER BAR ================= -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom_account_bar"
         android:layout_width="match_parent"
@@ -267,11 +240,9 @@
         android:background="@color/black"
         android:clickable="true"
         android:focusable="true"
-        android:paddingHorizontal="14dp"
+        android:paddingHorizontal="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <!-- Avatar & Status -->
         <FrameLayout
             android:id="@+id/avatar_container"
             android:layout_width="40dp"
@@ -293,8 +264,6 @@
                 android:layout_gravity="bottom|end"
                 android:background="@drawable/online" />
         </FrameLayout>
-
-        <!-- User Info -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -314,8 +283,8 @@
                     android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="swasti"
-                    android:textColor="@color/white"
+                    android:text="BOT-99"
+                    android:textColor="@color/warm_white"
                     android:textSize="13.5sp"
                     android:textStyle="bold" />
 
@@ -325,7 +294,7 @@
                     android:layout_marginStart="4dp"
                     android:rotation="90"
                     android:src="@drawable/forward_arrow"
-                    app:tint="#B0B0B0" />
+                    app:tint="@color/soft_border" />
             </LinearLayout>
 
             <TextView
@@ -333,11 +302,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Online"
-                android:textColor="#9E9E9E"
+                android:textColor="@color/soft_border"
                 android:textSize="10.5sp" />
         </LinearLayout>
-
-        <!-- Notification Bell -->
         <ImageView
             android:id="@+id/btn_notification"
             android:layout_width="22dp"

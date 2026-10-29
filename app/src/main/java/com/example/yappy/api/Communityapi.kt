@@ -1,4 +1,4 @@
-package com.example.yappy.api
+﻿package com.example.yappy.api
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -24,31 +24,30 @@ data class Channel(
 class ApiException(val code: Int, message: String) : Exception(message)
 
 /**
- * Plain HttpURLConnection client for the Smart Community API.
- * All functions BLOCK, so call them from a background thread.
+ * Client matching the Smart Community Postman Collection.
+ * All functions BLOCK, so call them from a background thread / coroutine.
  */
 object CommunityApi {
 
     private const val BASE_URL = "https://smart-community-2.onrender.com/api"
 
-    // ---------- Communities ----------
-
-    /** GET /api/communities */
+    /** 1. GET /api/communities */
     fun getCommunities(token: String): Result<List<ApiCommunity>> = runCatching {
         val json = request("GET", "/communities", token)
         val arr = json.optJSONArray("communities") ?: JSONArray()
         (0 until arr.length()).map { parseCommunity(arr.getJSONObject(it)) }
     }
 
-    /** POST /api/communities  { name, description } */
+    /** 2. POST /api/communities  { name, description } */
     fun createCommunity(token: String, name: String, description: String): Result<ApiCommunity> =
         runCatching {
             val body = JSONObject().put("name", name).put("description", description)
             val json = request("POST", "/communities", token, body)
-            parseCommunity(json.getJSONObject("community")).copy(isMember = true)
+            val commObj = json.optJSONObject("community") ?: json
+            parseCommunity(commObj).copy(isMember = true)
         }
 
-    /** POST /api/communities/{id}/join  (409 "already a member" counts as success) */
+    /** 3. POST /api/communities/{id}/join  (409 "already a member" counts as success) */
     fun joinCommunity(token: String, communityId: String): Result<Unit> = runCatching {
         try {
             request("POST", "/communities/$communityId/join", token)
@@ -58,16 +57,14 @@ object CommunityApi {
         Unit
     }
 
-    // ---------- Channels ----------
-
-    /** GET /api/channels/communities/{id}/channels */
+    /** 4. GET /api/channels/communities/{id}/channels */
     fun getChannels(token: String, communityId: String): Result<List<Channel>> = runCatching {
         val json = request("GET", "/channels/communities/$communityId/channels", token)
         val arr = json.optJSONArray("channels") ?: JSONArray()
         (0 until arr.length()).map { parseChannel(arr.getJSONObject(it)) }
     }
 
-    /** POST /api/channels/communities/{id}/channels  { name, description } (owner only) */
+    /** 5. POST /api/channels/communities/{id}/channels  { name, description } */
     fun createChannel(
         token: String,
         communityId: String,
@@ -76,22 +73,50 @@ object CommunityApi {
     ): Result<Channel> = runCatching {
         val body = JSONObject().put("name", name).put("description", description)
         val json = request("POST", "/channels/communities/$communityId/channels", token, body)
-        parseChannel(json.getJSONObject("channel"))
+        val chObj = json.optJSONObject("channel") ?: json
+        parseChannel(chObj)
     }
 
-    // ---------- Helpers ----------
+    /** 6. GET /api/channels/{channelId} */
+    fun getChannelDetails(token: String, channelId: String): Result<Channel> = runCatching {
+        val json = request("GET", "/channels/$channelId", token)
+        val chObj = json.optJSONObject("channel") ?: json
+        parseChannel(chObj)
+    }
+
+    /** 7. PATCH /api/channels/{channelId}  { name?, description? } */
+    fun updateChannel(
+        token: String,
+        channelId: String,
+        name: String?,
+        description: String?
+    ): Result<Channel> = runCatching {
+        val body = JSONObject().apply {
+            if (name != null) put("name", name)
+            if (description != null) put("description", description)
+        }
+        val json = request("PATCH", "/channels/$channelId", token, body)
+        val chObj = json.optJSONObject("channel") ?: json
+        parseChannel(chObj)
+    }
+
+    /** 8. DELETE /api/channels/{channelId} */
+    fun deleteChannel(token: String, channelId: String): Result<Unit> = runCatching {
+        request("DELETE", "/channels/$channelId", token)
+        Unit
+    }
 
     private fun parseCommunity(o: JSONObject) = ApiCommunity(
-        id = o.getString("_id"),
+        id = o.optString("_id", o.optString("id")),
         name = o.optString("name"),
         description = o.optString("description"),
-        category = o.optString("category"),
+        category = o.optString("category", "General"),
         memberCount = o.optInt("memberCount", 0),
         isMember = o.optBoolean("isMember", false)
     )
 
     private fun parseChannel(o: JSONObject) = Channel(
-        id = o.getString("_id"),
+        id = o.optString("_id", o.optString("id")),
         name = o.optString("name"),
         description = o.optString("description"),
         type = o.optString("type", "text")
@@ -107,7 +132,9 @@ object CommunityApi {
             requestMethod = method
             connectTimeout = 40000   // Render free tier can take a while to wake up
             readTimeout = 40000
-            setRequestProperty("Authorization", "Bearer $token")
+            if (token.isNotBlank()) {
+                setRequestProperty("Authorization", "Bearer $token")
+            }
             setRequestProperty("Content-Type", "application/json")
             setRequestProperty("Accept", "application/json")
         }
@@ -124,7 +151,8 @@ object CommunityApi {
             val json = try { JSONObject(text) } catch (e: Exception) { JSONObject() }
 
             if (code !in 200..299) {
-                throw ApiException(code, json.optString("message", "Request failed ($code)"))
+                val errorMsg = json.optString("message", "Request failed ($code)")
+                throw ApiException(code, errorMsg)
             }
             return json
         } finally {

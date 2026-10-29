@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/warm_white"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:text="User" />
@@ -64,7 +64,7 @@
             android:id="@+id/tv_timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#80FFFFFF"
+            android:textColor="@color/soft_border"
             android:textSize="11sp"
             tools:text="3d" />
     </LinearLayout>
@@ -77,11 +77,11 @@
         android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="#A0FFFFFF"
+        android:textColor="@color/soft_border"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/avatar_layout"
         app:layout_constraintTop_toBottomOf="@id/header_layout"
-        tools:text="User: Welcome @swasti to bridgerton~" />
+        tools:text="User: Welcome @BOT-99 to bridgerton~" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

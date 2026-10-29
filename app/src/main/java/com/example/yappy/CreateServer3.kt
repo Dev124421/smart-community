@@ -1,5 +1,6 @@
-package com.example.yappy
+﻿package com.example.yappy
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -9,6 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.yappy.api.CommunityApi
+import com.example.yappy.api.SessionManager
+import kotlin.concurrent.thread
 
 class CreateServer3 : AppCompatActivity() {
 
@@ -16,101 +20,50 @@ class CreateServer3 : AppCompatActivity() {
 
     private var serverTemplate: String = "Custom"
     private var serverType: String = "Not specified"
+    private lateinit var session: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_server3)
 
-        serverTemplate = intent.getStringExtra("SERVER_TEMPLATE")
-            ?: "Custom"
+        session = SessionManager(this)
 
-        serverType = intent.getStringExtra("SERVER_TYPE")
-            ?: "Not specified"
+        serverTemplate = intent.getStringExtra("SERVER_TEMPLATE") ?: "Custom"
+        serverType = intent.getStringExtra("SERVER_TYPE") ?: "Not specified"
 
-        val backButton = findViewById<ImageView>(
-            R.id.back_arrow
-        )
+        val backButton = findViewById<ImageView>(R.id.back_arrow)
+        val addIcon = findViewById<ImageView>(R.id.add_icon)
+        val gamingIcon = findViewById<ImageView>(R.id.gaming_icon)
+        val serverName = findViewById<EditText>(R.id.server_name)
+        val createButton = findViewById<Button>(R.id.createBtn)
+        val guidelines = findViewById<TextView>(R.id.guidelines)
 
-        val addIcon = findViewById<ImageView>(
-            R.id.add_icon
-        )
-
-        val gamingIcon = findViewById<ImageView>(
-            R.id.gaming_icon
-        )
-
-        val serverName = findViewById<EditText>(
-            R.id.server_name
-        )
-
-        val createButton = findViewById<Button>(
-            R.id.createBtn
-        )
-
-        val guidelines = findViewById<TextView>(
-            R.id.guidelines
-        )
-
-        // Handle system bar insets.
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById(R.id.main)
-        ) { view, insets ->
-
-            val systemBars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars()
-            )
-
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Go back to CreateServer2
-        backButton.setOnClickListener {
-            finish()
-        }
+        backButton.setOnClickListener { finish() }
 
-        // Select the default icon
         addIcon.setOnClickListener {
             selectedIcon = R.drawable.add_icon
-
-            Toast.makeText(
-                this,
-                "Default server icon selected",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, "Default server icon selected", Toast.LENGTH_SHORT).show()
         }
 
-        // Select the gaming icon
         gamingIcon.setOnClickListener {
             selectedIcon = R.drawable.gaming2
-
-            Toast.makeText(
-                this,
-                "Gaming icon selected",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, "Gaming icon selected", Toast.LENGTH_SHORT).show()
         }
 
-        // Open community guidelines
         guidelines.setOnClickListener {
-            Toast.makeText(
-                this,
-                "Community Guidelines",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            // Open a guidelines screen or webpage here.
+            val intent = Intent(this, Rules::class.java).apply {
+                putExtra(homescreen.EXTRA_COMMUNITY_NAME, "Community Guidelines")
+            }
+            startActivity(intent)
         }
 
-        // Create server
         createButton.setOnClickListener {
-
             val name = serverName.text.toString().trim()
 
             if (name.isEmpty()) {
@@ -119,30 +72,84 @@ class CreateServer3 : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Server details are ready for saving.
-            val result = """
-                Server Name: $name
-                Template: $serverTemplate
-                Server Type: $serverType
-                Icon Resource: $selectedIcon
-            """.trimIndent()
+            createButton.isEnabled = false
+            createButton.text = "Creating Server..."
 
-            Toast.makeText(
-                this,
-                "Server '$name' created successfully!",
-                Toast.LENGTH_LONG
-            ).show()
+            val token = session.getAccessToken().orEmpty()
+            val description = "A $serverTemplate server for $serverType"
 
-            // Return the created server information to the caller.
-            intent.putExtra("SERVER_NAME", name)
-            intent.putExtra("SERVER_TEMPLATE", serverTemplate)
-            intent.putExtra("SERVER_TYPE", serverType)
-            intent.putExtra("SERVER_ICON", selectedIcon)
+            if (token.isBlank()) {
+                val localId = "local_${System.currentTimeMillis()}"
+                JoinedCommunityManager.addJoinedCommunity(
+                    this,
+                    id = localId,
+                    name = name,
+                    description = description,
+                    category = serverTemplate,
+                    memberCount = "1 Member"
+                )
+                ChannelManager.saveChannels(this, localId, ChannelManager.getDefaultChannels())
+                Toast.makeText(this, "Server '$name' created successfully!", Toast.LENGTH_SHORT).show()
 
-            setResult(RESULT_OK, intent)
+                val channelIntent = Intent(this, ChannelListActivity::class.java).apply {
+                    putExtra(ChannelListActivity.EXTRA_COMMUNITY_ID, localId)
+                    putExtra(ChannelListActivity.EXTRA_COMMUNITY_NAME, name)
+                }
+                startActivity(channelIntent)
+                finish()
+                return@setOnClickListener
+            }
 
-            finish()
+            thread {
+                val result = CommunityApi.createCommunity(token, name, description)
+                runOnUiThread {
+                    if (isFinishing || isDestroyed) return@runOnUiThread
+                    createButton.isEnabled = true
+                    createButton.text = "Create Server"
+
+                    result.onSuccess { createdCommunity ->
+                        JoinedCommunityManager.addJoinedCommunity(
+                            this,
+                            id = createdCommunity.id,
+                            name = createdCommunity.name,
+                            description = createdCommunity.description,
+                            category = createdCommunity.category,
+                            memberCount = "1 Member"
+                        )
+                        ChannelManager.saveChannels(this, createdCommunity.id, ChannelManager.getDefaultChannels())
+                        thread {
+                            CommunityApi.createChannel(token, createdCommunity.id, "general", "General discussion")
+                            CommunityApi.createChannel(token, createdCommunity.id, "welcome-and-rules", "Server rules and announcements")
+                        }
+
+                        Toast.makeText(this, "Server '${createdCommunity.name}' created successfully!", Toast.LENGTH_SHORT).show()
+                        val channelIntent = Intent(this, ChannelListActivity::class.java).apply {
+                            putExtra(ChannelListActivity.EXTRA_COMMUNITY_ID, createdCommunity.id)
+                            putExtra(ChannelListActivity.EXTRA_COMMUNITY_NAME, createdCommunity.name)
+                        }
+                        startActivity(channelIntent)
+                        finish()
+                    }.onFailure { error ->
+                        val localId = "local_${System.currentTimeMillis()}"
+                        JoinedCommunityManager.addJoinedCommunity(
+                            this,
+                            id = localId,
+                            name = name,
+                            description = description,
+                            category = serverTemplate,
+                            memberCount = "1 Member"
+                        )
+                        ChannelManager.saveChannels(this, localId, ChannelManager.getDefaultChannels())
+                        Toast.makeText(this, "Server created: ${error.message}", Toast.LENGTH_SHORT).show()
+                        val channelIntent = Intent(this, ChannelListActivity::class.java).apply {
+                            putExtra(ChannelListActivity.EXTRA_COMMUNITY_ID, localId)
+                            putExtra(ChannelListActivity.EXTRA_COMMUNITY_NAME, name)
+                        }
+                        startActivity(channelIntent)
+                        finish()
+                    }
+                }
+            }
         }
     }
 }
-

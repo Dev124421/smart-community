@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channel_record_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="25dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+        <LinearLayout
+            android:id="@+id/actions_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_search"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="2dp"
+                android:src="@drawable/search"
+                app:tint="@color/soft_border" />
+
+            <ImageView
+                android:id="@+id/btn_notification"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="2dp"
+                android:src="@drawable/notification"
+                app:tint="@color/soft_border" />
+
+            <ImageView
+                android:id="@+id/btn_settings"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="2dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/soft_border" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/channel_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="25dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="14dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        <FrameLayout
+            android:id="@+id/avatar_channel_badge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_button"
+            android:backgroundTint="#2B2D31">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="#"
+                android:textColor="@color/warm_white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_channel_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/warm_white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="welcome-and-rules" />
+
+            <TextView
+                android:id="@+id/tv_channel_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Text Channel"
+                android:textColor="@color/soft_border"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <HorizontalScrollView
+        android:id="@+id/scroll_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/channel_header">
+
+        <LinearLayout
+            android:id="@+id/layout_tab_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="25dp">
+            <LinearLayout
+                android:id="@+id/tab_members"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_tab_members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Members"
+                    android:textColor="@color/pink"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/indicator_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/pink"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_media"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_tab_media"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Media"
+                    android:textColor="@color/soft_border"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/indicator_media"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/pink"
+                    android:visibility="invisible" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_threads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_tab_threads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Threads"
+                    android:textColor="@color/soft_border"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/indicator_threads"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/pink"
+                    android:visibility="invisible" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_links"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_tab_links"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Links"
+                    android:textColor="@color/soft_border"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/indicator_links"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/pink"
+                    android:visibility="invisible" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tab_files"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_tab_files"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Files"
+                    android:textColor="@color/soft_border"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/indicator_files"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/pink"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+    <View
+        android:id="@+id/tab_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#20FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/scroll_tabs" />
+    <FrameLayout
+        android:id="@+id/container_tab_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_divider">
+
+        <include
+            android:id="@+id/view_tab_members"
+            layout="@layout/layout_tab_members"
+            android:visibility="visible" />
+
+        <include
+            android:id="@+id/view_tab_media"
+            layout="@layout/layout_tab_media"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/view_tab_threads"
+            layout="@layout/layout_tab_threads"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/view_tab_links"
+            layout="@layout/layout_tab_links"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/view_tab_files"
+            layout="@layout/layout_tab_files"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

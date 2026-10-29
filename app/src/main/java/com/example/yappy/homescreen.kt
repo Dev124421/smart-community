@@ -1,4 +1,4 @@
-package com.example.yappy
+﻿package com.example.yappy
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -28,7 +28,6 @@ class homescreen : AppCompatActivity() {
     private lateinit var railAdapter: ServerRailAdapter
     private lateinit var session: SessionManager
 
-    /** ids of communities the user already belongs to */
     private val memberIds = mutableSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +37,11 @@ class homescreen : AppCompatActivity() {
         binding = ActivityHomescreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val minTop = (15 * resources.displayMetrics.density).toInt()
+        val minBottom = (25 * resources.displayMetrics.density).toInt()
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, maxOf(systemBars.top, minTop), systemBars.right, maxOf(systemBars.bottom, minBottom))
             insets
         }
 
@@ -53,7 +54,8 @@ class homescreen : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Reload so a community created/joined elsewhere shows up when we come back
+        val localJoined = JoinedCommunityManager.getJoinedCommunities(this)
+        railAdapter.submit(localJoined)
         loadCommunities()
     }
 
@@ -70,7 +72,6 @@ class homescreen : AppCompatActivity() {
     }
 
     private fun setupRecyclerViews() {
-        // Main list = communities you have NOT joined yet ("Join communities")
         communityAdapter = CommunityAdapter(mutableListOf()) { selected ->
             onCommunityClicked(selected)
         }
@@ -80,8 +81,7 @@ class homescreen : AppCompatActivity() {
             isNestedScrollingEnabled = false
         }
 
-        // Left rail = communities you HAVE joined
-        railAdapter = ServerRailAdapter(emptyList()) { selected ->
+        railAdapter = ServerRailAdapter(JoinedCommunityManager.getJoinedCommunities(this)) { selected ->
             openCommunity(selected)
         }
         binding.rvServerRail.apply {
@@ -90,16 +90,15 @@ class homescreen : AppCompatActivity() {
         }
     }
 
-    // ------------------------------------------------------------------
-    // API
-    // ------------------------------------------------------------------
-
     private fun accessToken(): String? = session.getAccessToken()
 
     private fun loadCommunities() {
+        val currentJoined = JoinedCommunityManager.getJoinedCommunities(this)
+        railAdapter.submit(currentJoined)
+
         val token = accessToken()
         if (token.isNullOrBlank()) {
-            goToLogin()
+            loadPreviewCommunities()
             return
         }
 
@@ -109,48 +108,70 @@ class homescreen : AppCompatActivity() {
                 if (isFinishing || isDestroyed) return@runOnUiThread
 
                 result.onSuccess { list ->
-                    val joined = list.filter { it.isMember }
-                    val others = list.filter { !it.isMember }
+                    if (list.isEmpty()) {
+                        loadPreviewCommunities()
+                    } else {
+                        val allJoined = JoinedCommunityManager.syncWithBackend(this@homescreen, list)
+                        railAdapter.submit(allJoined)
 
-                    memberIds.clear()
-                    memberIds.addAll(joined.map { it.id })
+                        memberIds.clear()
+                        memberIds.addAll(allJoined.map { it.id })
 
-                    railAdapter.submit(joined.map { it.toModel() })
-                    communityAdapter.updateList(others.map { it.toModel() })
-                }.onFailure { handleError(it) }
+                        val unjoined = list.filter { apiComm ->
+                            !JoinedCommunityManager.isJoined(this@homescreen, apiComm.id, apiComm.name)
+                        }
+                        communityAdapter.updateList(unjoined.map { it.toModel() })
+                    }
+                }.onFailure { 
+                    loadPreviewCommunities()
+                }
             }
         }
     }
 
+    private fun loadPreviewCommunities() {
+        val joined = JoinedCommunityManager.getJoinedCommunities(this)
+        memberIds.clear()
+        memberIds.addAll(joined.map { it.id })
+        railAdapter.submit(joined)
+
+        val defaultOthers = listOf(
+            Community("3", "Study Lounge", "Collaborate on homework and projects", "Education", "12K Members"),
+            Community("4", "Anime & Manga", "Discuss latest episodes and releases", "Entertainment", "88K Members"),
+            Community("5", "Dev Hangout", "Kotlin, Android & Full Stack discussions", "Tech", "34K Members")
+        ).filter { !JoinedCommunityManager.isJoined(this, it.id, it.name) }
+
+        communityAdapter.updateList(defaultOthers)
+    }
+
     private fun joinCommunity(communityId: String, communityName: String?) {
+        val targetName = communityName ?: "Community $communityId"
+
+        JoinedCommunityManager.addJoinedCommunity(
+            this,
+            id = communityId,
+            name = targetName,
+            memberCount = "Joined"
+        )
+        val updated = JoinedCommunityManager.getJoinedCommunities(this)
+        railAdapter.submit(updated)
+
+        Toast.makeText(this, "Joined $targetName!", Toast.LENGTH_SHORT).show()
+
         val token = accessToken()
-        if (token.isNullOrBlank()) {
-            goToLogin()
-            return
-        }
-
-        thread {
-            val result = CommunityApi.joinCommunity(token, communityId)
-            runOnUiThread {
-                if (isFinishing || isDestroyed) return@runOnUiThread
-
-                result.onSuccess {
-                    Toast.makeText(this, "Joined ${communityName ?: "community"}", Toast.LENGTH_SHORT).show()
-                    loadCommunities()
-                    if (communityName != null) {
-                        openCommunity(communityId, communityName)
-                    }
-                }.onFailure { handleError(it) }
+        if (!token.isNullOrBlank()) {
+            thread {
+                CommunityApi.joinCommunity(token, communityId)
             }
         }
+
+        openCommunity(communityId, targetName)
     }
 
     private fun handleError(error: Throwable) {
         if (error is ApiException && error.code == 401) {
-            // Access token expired (they only live 15 minutes)
-            Toast.makeText(this, "Session expired, please log in again", Toast.LENGTH_LONG).show()
-            session.clear()
-            goToLogin()
+            Toast.makeText(this, "Showing preview communities", Toast.LENGTH_SHORT).show()
+            loadPreviewCommunities()
         } else {
             Toast.makeText(this, error.message ?: "Something went wrong", Toast.LENGTH_LONG).show()
         }
@@ -171,10 +192,6 @@ class homescreen : AppCompatActivity() {
         membersCount = "$memberCount Members",
     )
 
-    // ------------------------------------------------------------------
-    // Navigation / clicks
-    // ------------------------------------------------------------------
-
     private fun onCommunityClicked(community: Community) {
         if (community.id in memberIds) {
             openCommunity(community)
@@ -188,19 +205,11 @@ class homescreen : AppCompatActivity() {
     }
 
     private fun openCommunity(id: String, name: String) {
-        // Opened by class NAME (string) so this file compiles even though the activity
-        // and the model are both called "Community". Set COMMUNITY_ACTIVITY to the exact
-        // name of your community screen activity (same name as in AndroidManifest.xml).
-        val intent = Intent().apply {
-            setClassName(this@homescreen, COMMUNITY_ACTIVITY)
-            putExtra(EXTRA_COMMUNITY_ID, id)
-            putExtra(EXTRA_COMMUNITY_NAME, name)
+        val intent = Intent(this, ChannelListActivity::class.java).apply {
+            putExtra(ChannelListActivity.EXTRA_COMMUNITY_ID, id)
+            putExtra(ChannelListActivity.EXTRA_COMMUNITY_NAME, name)
         }
-        try {
-            startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "Community screen not found: $COMMUNITY_ACTIVITY", Toast.LENGTH_LONG).show()
-        }
+        startActivity(intent)
     }
 
     private fun showInviteDialog() {
@@ -218,8 +227,7 @@ class homescreen : AppCompatActivity() {
                 if (code.isEmpty()) {
                     Toast.makeText(this, "Please enter an invite link", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Assumes the last part of the link is the community id
-                    joinCommunity(code, null)
+                    joinCommunity(code, "Community $code")
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -255,8 +263,5 @@ class homescreen : AppCompatActivity() {
     companion object {
         const val EXTRA_COMMUNITY_ID = "community_id"
         const val EXTRA_COMMUNITY_NAME = "community_name"
-
-        // TODO: change to the real class name of your community screen
-        const val COMMUNITY_ACTIVITY = "com.example.yappy.Community"
     }
 }

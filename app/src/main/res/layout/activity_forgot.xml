@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="32dp">
+    android:paddingHorizontal="25dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Forgot Password?"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +41,7 @@
         android:gravity="center"
         android:lineSpacingExtra="2dp"
         android:text="Don't worry! Enter your registered email address and we'll send you a link to reset your password."
-        android:textColor="@color/text"
+        android:textColor="@color/soft_border"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Email address"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +68,8 @@
         android:hint="Enter your email address"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/text"
+        android:textColor="@color/warm_white"
+        android:textColorHint="@color/soft_border"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" />
 
@@ -90,7 +91,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginEnd="12dp"
-        android:background="@color/text"
+        android:background="@color/soft_border"
         app:layout_constraintBottom_toBottomOf="@id/tvOrContinue"
         app:layout_constraintEnd_toStartOf="@id/tvOrContinue"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Remembered your details?"
-        android:textColor="@color/text"
+        android:textColor="@color/soft_border"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +114,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"
-        android:background="@color/text"
+        android:background="@color/soft_border"
         app:layout_constraintBottom_toBottomOf="@id/tvOrContinue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvOrContinue"
@@ -132,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Take me back to "
-            android:textColor="@color/text"
+            android:textColor="@color/soft_border"
             android:textSize="13sp" />
 
         <TextView

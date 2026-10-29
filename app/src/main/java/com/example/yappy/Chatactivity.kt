@@ -1,5 +1,6 @@
 package com.example.yappy
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -23,25 +24,40 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var rvChat: RecyclerView
     private lateinit var etMessage: EditText
+    private var currentUserName: String = "You"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_chat)
 
-        // Keep the input row above the keyboard and clear of system bars
+        val prefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        currentUserName = prefs.getString("name", null)
+            ?: prefs.getString("email", null)?.substringBefore("@")
+            ?: "You"
+
+        val minTop = (15 * resources.displayMetrics.density).toInt()
+        val minBottom = (25 * resources.displayMetrics.density).toInt()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById<View>(R.id.chat_root)) { v, insets ->
             val bars = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
             )
-            v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            v.setPadding(bars.left, maxOf(bars.top, minTop), bars.right, maxOf(bars.bottom, minBottom))
             insets
         }
 
         val chatName = intent.getStringExtra(EXTRA_CHAT_NAME) ?: "Chat"
         val lastMessage = intent.getStringExtra(EXTRA_LAST_MESSAGE)
 
-        findViewById<TextView>(R.id.chat_title).text = chatName
+        findViewById<TextView>(R.id.chat_title).apply {
+            text = chatName
+            setOnClickListener {
+                val recordIntent = Intent(this@ChatActivity, ChannelRecordActivity::class.java).apply {
+                    putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, chatName)
+                }
+                startActivity(recordIntent)
+            }
+        }
         findViewById<TextView>(R.id.chat_back).setOnClickListener { finish() }
 
         rvChat = findViewById(R.id.rv_chat)
@@ -51,9 +67,17 @@ class ChatActivity : AppCompatActivity() {
         rvChat.layoutManager = LinearLayoutManager(this).apply { stackFromEnd = true }
         rvChat.adapter = chatAdapter
 
-        // Show the last message of the conversation as the first bubble
         if (!lastMessage.isNullOrBlank()) {
-            chatAdapter.add(ChatMessage(System.nanoTime(), lastMessage, false, now()))
+            val otherSender = chatName.removePrefix("#").trim().ifEmpty { "User" }
+            chatAdapter.add(
+                ChatMessage(
+                    id = System.nanoTime(),
+                    text = lastMessage,
+                    isMine = false,
+                    time = now(),
+                    senderName = otherSender
+                )
+            )
         }
 
         findViewById<Button>(R.id.btn_send).setOnClickListener { sendMessage() }
@@ -69,8 +93,15 @@ class ChatActivity : AppCompatActivity() {
         val text = etMessage.text.toString().trim()
         if (text.isEmpty()) return
 
-        // TODO: when your chat API exists, POST the message here and add it on success
-        chatAdapter.add(ChatMessage(System.nanoTime(), text, true, now()))
+        chatAdapter.add(
+            ChatMessage(
+                id = System.nanoTime(),
+                text = text,
+                isMine = true,
+                time = now(),
+                senderName = currentUserName
+            )
+        )
         rvChat.scrollToPosition(chatAdapter.itemCount - 1)
         etMessage.text.clear()
     }

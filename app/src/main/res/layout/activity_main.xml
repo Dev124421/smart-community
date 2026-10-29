@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="32dp">
+    android:paddingHorizontal="25dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Welcome back."
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Your people. Your conversations"
-        android:textColor="@color/text"
+        android:textColor="@color/soft_border"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Email address"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,8 +66,8 @@
         android:hint="Enter your email address"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/text"
+        android:textColor="@color/warm_white"
+        android:textColorHint="@color/soft_border"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" />
 
@@ -76,25 +77,47 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Password"
-        android:textColor="@color/white"
+        android:textColor="@color/warm_white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
-    <EditText
-        android:id="@+id/etPassword"
+    <FrameLayout
+        android:id="@+id/layoutPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/input_box_2"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:paddingHorizontal="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/text"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tvPasswordLabel" />
+        app:layout_constraintTop_toBottomOf="@id/tvPasswordLabel">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="48dp"
+            android:textColor="@color/warm_white"
+            android:textColorHint="@color/soft_border"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/btnTogglePassword"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Toggle password visibility"
+            android:focusable="true"
+            android:padding="6dp"
+            android:src="@drawable/ic_eye_off"
+            app:tint="@color/soft_border" />
+    </FrameLayout>
 
     <CheckBox
         android:id="@+id/cbRememberMe"
@@ -102,10 +125,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Remember me"
-        android:textColor="@color/text"
+        android:textColor="@color/soft_border"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etPassword" />
+        app:layout_constraintTop_toBottomOf="@id/layoutPassword" />
 
     <TextView
         android:id="@+id/forgotPass"
@@ -136,7 +159,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginEnd="12dp"
-        android:background="@color/text"
+        android:background="@color/soft_border"
         app:layout_constraintBottom_toBottomOf="@id/tvOrContinue"
         app:layout_constraintEnd_toStartOf="@id/tvOrContinue"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Or continue with"
-        android:textColor="@color/text"
+        android:textColor="@color/soft_border"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +182,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"
-        android:background="@color/text"
+        android:background="@color/soft_border"
         app:layout_constraintBottom_toBottomOf="@id/tvOrContinue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvOrContinue"
@@ -210,7 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? "
-            android:textColor="@color/text"
+            android:textColor="@color/soft_border"
             android:textSize="13sp" />
 
         <TextView

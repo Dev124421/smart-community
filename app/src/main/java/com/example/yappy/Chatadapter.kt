@@ -1,27 +1,31 @@
 package com.example.yappy.adapter
 
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.view.Gravity
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yappy.CommunityColorHelper
 import com.example.yappy.R
 import com.example.yappy.model.ChatMessage
 
-/** Chat bubbles: mine on the right (purple), theirs on the left (dark). */
+/**
+ * Discord-style chat messages:
+ * All messages appear on the left with the sender's avatar, username, and timestamp displayed above the message text.
+ */
 class ChatAdapter(
     private val items: MutableList<ChatMessage> = mutableListOf()
 ) : RecyclerView.Adapter<ChatAdapter.VH>() {
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
-        val row: LinearLayout = view.findViewById(R.id.msg_row)
-        val bubble: TextView = view.findViewById(R.id.tv_msg)
+        val avatarLayout: FrameLayout = view.findViewById(R.id.layout_avatar)
+        val avatarInitial: TextView = view.findViewById(R.id.tv_avatar_initial)
+        val username: TextView = view.findViewById(R.id.tv_username)
         val time: TextView = view.findViewById(R.id.tv_msg_time)
+        val text: TextView = view.findViewById(R.id.tv_msg)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -32,12 +36,31 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val m = items[position]
-        holder.bubble.text = m.text
-        holder.time.text = m.time
-        holder.row.gravity = if (m.isMine) Gravity.END else Gravity.START
 
-        val color = if (m.isMine) Color.parseColor("#8B5CF6") else Color.parseColor("#2B2D31")
-        ViewCompat.setBackgroundTintList(holder.bubble, ColorStateList.valueOf(color))
+        holder.username.text = m.senderName
+
+        val userColor = if (m.isMine) {
+            Color.parseColor("#5865F2")
+        } else {
+            CommunityColorHelper.getColor(m.senderName, m.senderName)
+        }
+        holder.username.setTextColor(userColor)
+
+        val initials = CommunityColorHelper.getInitials(m.senderName)
+        holder.avatarInitial.text = initials
+
+        val density = holder.itemView.resources.displayMetrics.density
+        val radiusPx = 20f * density
+        val avatarBg = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = radiusPx
+            setColor(userColor)
+        }
+        holder.avatarLayout.background = avatarBg
+        holder.avatarLayout.clipToOutline = true
+
+        holder.time.text = m.time
+        holder.text.text = m.text
     }
 
     override fun getItemCount() = items.size

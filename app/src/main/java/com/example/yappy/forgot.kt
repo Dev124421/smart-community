@@ -1,4 +1,4 @@
-package com.example.yappy
+﻿package com.example.yappy
 
 import android.os.Bundle
 import android.util.Patterns
@@ -24,11 +24,10 @@ class forgot : AppCompatActivity() {
         btnReset = findViewById(R.id.btnResetPassword)
         tvBackToLogin = findViewById(R.id.tvBackToLogin)
 
-        // Email carried over from the login screen (if the user had typed one)
         intent.getStringExtra(MainActivity.EXTRA_USER_EMAIL)?.let { carriedEmail ->
             if (carriedEmail.isNotBlank()) {
                 etEmail.setText(carriedEmail)
-                etEmail.setSelection(carriedEmail.length)   // cursor at the end
+                etEmail.setSelection(carriedEmail.length)
             }
         }
 
@@ -40,13 +39,15 @@ class forgot : AppCompatActivity() {
                 etEmail.requestFocus()
                 return@setOnClickListener
             }
-
-            // TODO: call the reset-password endpoint here once your backend provides one
             Toast.makeText(
                 this,
-                "Password reset isn't available yet. Please contact support.",
-                Toast.LENGTH_LONG
+                "Verification code sent to $email",
+                Toast.LENGTH_SHORT
             ).show()
+            val verifyIntent = android.content.Intent(this, verify::class.java).apply {
+                putExtra("email", email)
+            }
+            startActivity(verifyIntent)
         }
 
         tvBackToLogin.setOnClickListener { finish() }
