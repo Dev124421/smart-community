@@ -2,20 +2,21 @@ package com.example.yappy
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.yappy.api.SessionManager
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: AuthViewModel by viewModels()
+    private lateinit var session: SessionManager
 
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
@@ -25,9 +26,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnGoogle: ImageView
     private lateinit var signUp: TextView
 
+    private var submittedEmail = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        session = SessionManager(this)
+
+        // Already logged in and chose "Remember me": skip the login screen
+        if (session.shouldAutoLogin()) {
+            startActivity(Intent(this, homescreen::class.java))
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_main)
 
         etEmail = findViewById(R.id.etEmail)
@@ -38,65 +51,37 @@ class MainActivity : AppCompatActivity() {
         btnGoogle = findViewById(R.id.btnGoogle)
         signUp = findViewById(R.id.signUp)
 
-        btnLogin.setOnClickListener {
-            val userEmail = etEmail.text.toString().trim()
-            val userPassword = etPassword.text.toString().trim()
+        // Prefill email if another screen passed one in
+        intent.getStringExtra(EXTRA_USER_EMAIL)?.let { etEmail.setText(it) }
 
-            if (userEmail.isEmpty()) {
+        observeLogin()
+
+        btnLogin.setOnClickListener {
+            val email = etEmail.text.toString().trim()
+            val password = etPassword.text.toString()
+
+            if (email.isEmpty()) {
                 etEmail.error = "Please enter your email address"
                 etEmail.requestFocus()
                 return@setOnClickListener
             }
-
-            if (userPassword.isEmpty()) {
+            if (password.isEmpty()) {
                 etPassword.error = "Please enter your password"
                 etPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            if (userPassword.length < 6) {
-                etPassword.error = "Password must be at least 6 characters"
-                etPassword.requestFocus()
-                return@setOnClickListener
-            }
-
-            btnLogin.isEnabled = false
-            btnLogin.text = "Logging in..."
-
-            AuthApi.login(userEmail, userPassword, object : AuthApi.AuthCallback {
-                override fun onSuccess(token: String, username: String) {
-                    btnLogin.isEnabled = true
-                    btnLogin.text = "Log in  ➔"
-
-                    Toast.makeText(this@MainActivity, "Authenticated via Demo API!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@MainActivity, homescreen::class.java).apply {
-                        putExtra(EXTRA_USERNAME, username)
-                        putExtra(EXTRA_USER_EMAIL, userEmail)
-                        putExtra(EXTRA_AUTH_TOKEN, token)
-                        putExtra(EXTRA_REMEMBER_ME, cbRememberMe.isChecked)
-                    }
-                    startActivity(intent)
-                    finish()
-                }
-
-                override fun onError(errorMessage: String) {
-                    btnLogin.isEnabled = true
-                    btnLogin.text = "Log in  ➔"
-                    etPassword.error = errorMessage
-                    Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_LONG).show()
-                }
-            })
+            submittedEmail = email
+            setLoading(true)
+            viewModel.login(email, password)
         }
 
         signUp.setOnClickListener {
-            Toast.makeText(this, "Navigate to Sign Up screen", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
         forgotPass.setOnClickListener {
             val currentEmail = etEmail.text.toString().trim()
-            Toast.makeText(this, "Navigate to Forgot Password", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, forgot::class.java).apply {
                 if (currentEmail.isNotEmpty()) putExtra(EXTRA_USER_EMAIL, currentEmail)
             }
@@ -107,29 +92,45 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Google Sign-In Triggered", Toast.LENGTH_SHORT).show()
         }
     }
-    companion object {
-        const val EXTRA_USERNAME = "username"
-        const val EXTRA_USER_EMAIL = "email"
-        const val EXTRA_AUTH_TOKEN = "auth_token"
-        const val EXTRA_REMEMBER_ME = "remember_me"
-    }
-}
-object Auth {
-    interface AuthCallback {
-        fun onSuccess(token: String, username: String)
-        fun onError(errorMessage: String)
+
+    private fun observeLogin() {
+        viewModel.loginResult.observe(this) { result ->
+            setLoading(false)
+
+            result.onSuccess { response ->
+                session.saveTokens(response.accessToken, response.refreshToken)
+                session.setRememberMe(cbRememberMe.isChecked)
+
+                // Save the email so the Account page can show it
+                getSharedPreferences("user_session", MODE_PRIVATE).edit()
+                    .putString("email", submittedEmail)
+                    .apply()
+
+                startActivity(Intent(this, homescreen::class.java))
+                finish()
+            }.onFailure { error ->
+                val message = error.message ?: "Login failed. Please try again."
+
+                // If the account isn't verified yet, send the user to the OTP screen
+                if (message.contains("verify", ignoreCase = true)) {
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this, verify::class.java).apply {
+                        putExtra("email", submittedEmail)
+                    })
+                } else {
+                    etPassword.error = message
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
-    fun login(email: String, pass: String, callback: AuthCallback) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (pass == "password123" || !email.contains("fail")) {
-                callback.onSuccess(
-                    token = "demo_jwt_token_12345",
-                    username = email.substringBefore("@")
-                )
-            } else {
-                callback.onError("Invalid credentials. Please try again.")
-            }
-        }, 1200)
+    private fun setLoading(isLoading: Boolean) {
+        btnLogin.isEnabled = !isLoading
+        btnLogin.text = if (isLoading) "Logging in..." else "Log in  ➔"
+    }
+
+    companion object {
+        const val EXTRA_USER_EMAIL = "email"
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_card_dark"
+    android:clickable="true"
+    android:clipToOutline="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/img_server_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Server icon"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo" />
+
+</FrameLayout>
