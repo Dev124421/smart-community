@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Intent
 import android.os.Bundle
@@ -135,10 +135,14 @@ class verify : AppCompatActivity() {
             .putString("email", email)
             .putString("name", finalName)
             .apply()
+        getSharedPreferences("user_profiles", MODE_PRIVATE).edit()
+            .putString(email, finalName)
+            .apply()
         if (session.getAccessToken() == null) {
             session.saveTokens("verified_user_token", "verified_refresh_token")
         }
         session.setRememberMe(true)
+        com.example.yappy.storage.NotificationStore.ensureInitialUserNotifications(this)
 
         val intent = Intent(this, homescreen::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

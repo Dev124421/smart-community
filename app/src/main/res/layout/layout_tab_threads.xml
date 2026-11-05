@@ -1,11 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="32dp">
+
     <TextView
         android:id="@+id/tv_threads_title"
         android:layout_width="wrap_content"
@@ -14,6 +16,7 @@
         android:textColor="@color/warm_white"
         android:textSize="18sp"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tv_threads_subtitle"
         android:layout_width="wrap_content"
@@ -25,7 +28,8 @@
         android:text="Stay focused on a conversation with a thread - a temporary text channel."
         android:textColor="@color/soft_border"
         android:textSize="13sp" />
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create_thread"
         android:layout_width="wrap_content"
         android:layout_height="44dp"

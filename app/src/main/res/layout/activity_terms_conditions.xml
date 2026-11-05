@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/terms_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="7dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/warm_white"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="Terms and Conditions"
+            android:textColor="@color/warm_white"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2B2D31" />
+
+    <!-- Simple Document View -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="48dp">
+
+            <!-- Title & Date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terms and Conditions"
+                android:textColor="@color/warm_white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Last Updated: November 5, 2026"
+                android:textColor="#949BA4"
+                android:textSize="13sp" />
+
+            <!-- Intro -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Welcome to Yappy! These Terms and Conditions govern your access to and use of the Yappy application.\n\nBy creating an account or using Yappy, you agree to follow these terms."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 1. Acceptance of Terms -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="1. Acceptance of Terms"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="By accessing Yappy, you confirm that you have read and agreed to these Terms and Conditions.\n\nIf you do not agree with these terms, please stop using the application."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 2. About Yappy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="2. About Yappy"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy is a communication platform designed to allow users to connect, communicate, and interact through:\n\n• Private messaging.\n• Community-based conversations.\n• User profiles.\n• Text-based discussions.\n• Other communication features available within the application."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 3. User Accounts -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="3. User Accounts"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="To access certain features, users must create an account.\n\nUsers agree to:\n\n• Provide accurate registration information.\n• Maintain the confidentiality of their login credentials.\n• Avoid sharing their accounts with unauthorized individuals.\n• Notify the development team about suspicious account activity.\n\nUsers are responsible for activities performed through their accounts."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 4. Acceptable Use -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="4. Acceptable Use"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Users agree to use Yappy responsibly.\n\nThe following activities are prohibited:\n\n• Harassment, bullying, or threatening other users.\n• Sharing illegal, harmful, or abusive content.\n• Impersonating other individuals.\n• Spamming or repeatedly disturbing other users.\n• Attempting to access unauthorized accounts or data.\n• Exploiting application vulnerabilities.\n• Using the platform for fraudulent or illegal activities."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 5. User-Generated Content -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="5. User-Generated Content"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Users are responsible for the messages, images, and other content they share through Yappy.\n\nBy submitting content, you confirm that:\n\n• You have the right to share that content.\n• Your content does not violate applicable laws.\n• Your content does not infringe upon another person's rights.\n\nYappy reserves the right to restrict or remove content that violates these terms, where the necessary moderation functionality is available."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 6. Account Suspension and Termination -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="6. Account Suspension and Termination"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy reserves the right to restrict, suspend, or terminate accounts involved in activities that violate these Terms and Conditions.\n\nUsers may also request account deletion according to the available account management procedures."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 7. Intellectual Property -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="7. Intellectual Property"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="The Yappy application, including its branding, interface design, logos, and original application content, belongs to its respective owners or developers unless otherwise stated.\n\nUsers may not copy, redistribute, or commercially exploit protected application content without appropriate permission."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 8. Service Availability -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="8. Service Availability"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy aims to provide a reliable communication experience.\n\nHowever, we do not guarantee uninterrupted availability. Temporary interruptions may occur due to:\n\n• Server maintenance.\n• Technical failures.\n• Network problems.\n• Software updates.\n• Third-party service disruptions."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 9. Limitation of Liability -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="9. Limitation of Liability"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy is provided on an &quot;as available&quot; basis.\n\nTo the extent permitted by applicable law, the developers are not responsible for indirect losses resulting from application interruptions, user-generated content, or unauthorized account access.\n\nNothing in these terms excludes liability that cannot legally be excluded."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 10. Changes to Terms -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="10. Changes to Terms"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="We may modify these Terms and Conditions as the application evolves.\n\nContinued use of Yappy after updated terms become effective constitutes acceptance of those changes, where permitted by applicable law."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 11. Governing Law -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="11. Governing Law"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="These Terms and Conditions shall be interpreted in accordance with the applicable laws of India, subject to applicable legal requirements."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 12. Contact Information -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="12. Contact Information"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="For questions, feedback, or concerns regarding these Terms and Conditions, please contact the Yappy development team through the application's support or contact section."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- Conclusion -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="Stay Connected. Stay Yappy!"
+                android:textColor="@color/warm_white"
+                android:textSize="15.5sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

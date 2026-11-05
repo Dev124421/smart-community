@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,7 +25,23 @@ class CreateServer3 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_create_server3)
+
+        val baseHorizontal = (25 * resources.displayMetrics.density).toInt()
+        val minTop = (15 * resources.displayMetrics.density).toInt()
+        val minBottom = (25 * resources.displayMetrics.density).toInt()
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                systemBars.left + baseHorizontal,
+                maxOf(systemBars.top, minTop),
+                systemBars.right + baseHorizontal,
+                maxOf(systemBars.bottom, minBottom)
+            )
+            insets
+        }
 
         session = SessionManager(this)
 
@@ -37,12 +54,6 @@ class CreateServer3 : AppCompatActivity() {
         val serverName = findViewById<EditText>(R.id.server_name)
         val createButton = findViewById<Button>(R.id.createBtn)
         val guidelines = findViewById<TextView>(R.id.guidelines)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         backButton.setOnClickListener { finish() }
 
@@ -89,6 +100,7 @@ class CreateServer3 : AppCompatActivity() {
                     memberCount = "1 Member"
                 )
                 ChannelManager.saveChannels(this, localId, ChannelManager.getDefaultChannels())
+                com.example.yappy.storage.NotificationStore.addCommunityCreatedNotification(this, name)
                 Toast.makeText(this, "Server '$name' created successfully!", Toast.LENGTH_SHORT).show()
 
                 val channelIntent = Intent(this, ChannelListActivity::class.java).apply {
@@ -122,6 +134,7 @@ class CreateServer3 : AppCompatActivity() {
                             CommunityApi.createChannel(token, createdCommunity.id, "welcome-and-rules", "Server rules and announcements")
                         }
 
+                        com.example.yappy.storage.NotificationStore.addCommunityCreatedNotification(this, createdCommunity.name)
                         Toast.makeText(this, "Server '${createdCommunity.name}' created successfully!", Toast.LENGTH_SHORT).show()
                         val channelIntent = Intent(this, ChannelListActivity::class.java).apply {
                             putExtra(ChannelListActivity.EXTRA_COMMUNITY_ID, createdCommunity.id)

@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.annotation.SuppressLint
 import android.content.Intent

@@ -122,9 +122,24 @@ class MainActivity : AppCompatActivity() {
                 session.saveTokens(response.accessToken, response.refreshToken)
                 session.setRememberMe(cbRememberMe.isChecked)
 
+                val profiles = getSharedPreferences("user_profiles", MODE_PRIVATE)
+                val savedName = profiles.getString(submittedEmail, null)
+                val resolvedName = if (!savedName.isNullOrBlank()) {
+                    savedName
+                } else {
+                    submittedEmail.substringBefore("@")
+                        .replace(".", " ")
+                        .replace("_", " ")
+                        .split(" ")
+                        .joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
+                }
+
                 getSharedPreferences("user_session", MODE_PRIVATE).edit()
                     .putString("email", submittedEmail)
+                    .putString("name", resolvedName)
                     .apply()
+
+                com.example.yappy.storage.NotificationStore.ensureInitialUserNotifications(this)
 
                 startActivity(Intent(this, homescreen::class.java))
                 finish()

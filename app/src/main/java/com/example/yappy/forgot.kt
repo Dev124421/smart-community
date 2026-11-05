@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.os.Bundle
 import android.util.Patterns

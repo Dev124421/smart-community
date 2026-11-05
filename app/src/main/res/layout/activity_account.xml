@@ -1,239 +1,997 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
     android:fillViewport="true"
-    android:paddingTop="15dp"
-    android:paddingBottom="25dp"
     android:clipToPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="25dp">
+        android:paddingBottom="40dp">
 
+        <!-- Top App Bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="56dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="18dp"
-            android:background="#2B2D31">
+            android:paddingHorizontal="16dp">
 
-            <TextView
+            <ImageView
                 android:id="@+id/backButton"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="â€¹"
-                android:textColor="@color/warm_white"
-                android:textSize="34sp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/warm_white"
                 android:contentDescription="Back" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="MY ACCOUNT"
+                android:layout_weight="1"
+                android:text="My Profile"
                 android:textColor="@color/warm_white"
-                android:textSize="18sp"
+                android:textSize="19sp"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+            <FrameLayout
+                android:id="@+id/layoutBtnNotification"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="4dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="25dp"
-            android:background="#2B2D31">
+                <ImageView
+                    android:id="@+id/btnNotification"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/notification"
+                    app:tint="@color/soft_border"
+                    android:contentDescription="Notifications" />
+
+                <View
+                    android:id="@+id/badgeNotificationDotAccount"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bg_notification_red_dot"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/logo"
-                android:contentDescription="Profile avatar" />
-
-            <TextView
-                android:id="@+id/profileUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Loading username..."
-                android:textColor="@color/warm_white"
-                android:textSize="23sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/profileEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Loading email..."
-                android:textColor="@color/soft_border"
-                android:textSize="14sp" />
-
-            <Button
-                android:id="@+id/editProfileButton"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/purple"
-                android:text="Edit Profile"
-                android:textColor="@color/white" />
+                android:id="@+id/btnShareProfile"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/share"
+                app:tint="@color/soft_border"
+                android:contentDescription="Share profile" />
 
         </LinearLayout>
 
+        <!-- Hero Profile Card -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_account_card"
+                android:orientation="vertical">
+
+                <!-- Gradient Banner -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:background="@drawable/bg_account_banner" />
+
+                <!-- Profile Body Below Banner -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="18dp"
+                    android:paddingBottom="20dp">
+
+                    <!-- Avatar Space Placeholder to avoid banner overlap clipping -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp" />
+
+                    <!-- User Name & Verified Icon Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/profileUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading username..."
+                            android:textColor="@color/warm_white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="6dp"
+                            android:src="@drawable/verified"
+                            android:contentDescription="Verified account" />
+
+                    </LinearLayout>
+
+                    <!-- Email & Tag Subtitle -->
+                    <TextView
+                        android:id="@+id/profileEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="user@example.com"
+                        android:textColor="#949BA4"
+                        android:textSize="13sp" />
+
+                    <!-- Badges & Status Chips Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <!-- Online Status Chip -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:background="@drawable/bg_badge_pill"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:background="@drawable/bg_status_online" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Active Now"
+                                android:textColor="@color/warm_white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <!-- Early Member Chip -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_badge_pill"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:src="@drawable/ic_diamond"
+                                app:tint="@color/purple" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Early Supporter"
+                                android:textColor="@color/warm_white"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Bio Snippet -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Hey there! Exploring smart communities on Yappy."
+                        android:textColor="#B5BAC1"
+                        android:textSize="13sp" />
+
+                    <!-- Edit Profile Action Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/editProfileButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/purple"
+                        android:text="Edit Profile"
+                        android:textColor="#101010"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_edit"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconTint="#101010" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Overlapping Avatar Container -->
+            <FrameLayout
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="54dp">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:padding="10dp"
+                    android:src="@drawable/logo"
+                    android:contentDescription="Profile avatar" />
+
+                <View
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/bg_status_online" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <!-- Section: ACCOUNT INFORMATION -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
+            android:paddingHorizontal="22dp"
             android:paddingTop="24dp"
-            android:paddingBottom="12dp"
+            android:paddingBottom="10dp"
             android:text="ACCOUNT INFORMATION"
-            android:textColor="@color/soft_border"
+            android:textColor="#949BA4"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="25dp"
-            android:background="#2B2D31"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_account_card"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username"
-                android:textColor="@color/soft_border"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/accountUsername"
+            <!-- Item: Display Name -->
+            <LinearLayout
+                android:id="@+id/rowAccountName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Username"
-                android:textColor="@color/warm_white"
-                android:textSize="16sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/purple" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Display Name"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/accountUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Username"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_edit"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="#404249" />
+                android:layout_marginVertical="14dp"
+                android:background="#313338" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email Address"
-                android:textColor="@color/soft_border"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/accountEmail"
+            <!-- Item: Email Address -->
+            <LinearLayout
+                android:id="@+id/rowAccountEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="user@example.com"
-                android:textColor="@color/warm_white"
-                android:textSize="16sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/green" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email Address"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/accountEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="user@example.com"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge_pill"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="3dp"
+                    android:text="Verified"
+                    android:textColor="@color/green"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="#404249" />
+                android:layout_marginVertical="14dp"
+                android:background="#313338" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User ID"
-                android:textColor="@color/soft_border"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/accountUserId"
+            <!-- Item: User ID / Tag -->
+            <LinearLayout
+                android:id="@+id/rowAccountUserId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="1"
-                android:textColor="@color/warm_white"
-                android:textSize="16sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_hashtag"
+                        app:tint="@color/Butter_yellow" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Tag"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/accountUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="#1024"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Copy"
+                    android:textColor="#6D737C"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="14dp"
+                android:background="#313338" />
+
+            <!-- Item: Member Since -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/pink" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Member Since"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/accountMemberSince"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="October 2026"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <!-- Section: SETTINGS & CONTROLS -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
+            android:paddingHorizontal="22dp"
             android:paddingTop="24dp"
-            android:paddingBottom="12dp"
-            android:text="ACCOUNT SETTINGS"
-            android:textColor="@color/soft_border"
+            android:paddingBottom="10dp"
+            android:text="SETTINGS &amp; CONTROLS"
+            android:textColor="#949BA4"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="25dp"
-            android:background="#2B2D31"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_account_card"
+            android:orientation="vertical">
 
-            <TextView
+            <!-- Row: Notifications -->
+            <LinearLayout
+                android:id="@+id/rowNotifications"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
-                android:text="ðŸ””   Notifications                         â€º"
-                android:textColor="@color/warm_white"
-                android:textSize="15sp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/notification"
+                        app:tint="@color/warm_white" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notifications"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mentions, DMs &amp; sound alerts"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#404249" />
+                android:layout_marginStart="68dp"
+                android:background="#313338" />
 
-            <TextView
+            <!-- Row: Help & Support -->
+            <LinearLayout
+                android:id="@+id/rowHelpSupport"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
-                android:text="ðŸ”’   Privacy                                  â€º"
-                android:textColor="@color/warm_white"
-                android:textSize="15sp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_help_support"
+                        app:tint="@color/warm_white" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Help &amp; Support"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FAQs, bug report &amp; feedback"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#404249" />
+                android:layout_marginStart="68dp"
+                android:background="#313338" />
 
-            <TextView
+            <!-- Row: Appearance & Theme -->
+            <LinearLayout
+                android:id="@+id/rowAppearance"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
-                android:text="âš™   Preferences                           â€º"
-                android:textColor="@color/warm_white"
-                android:textSize="15sp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_magic_wand"
+                        app:tint="@color/warm_white" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Appearance"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dark Midnight Theme (Active)"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="68dp"
+                android:background="#313338" />
+
+            <!-- Row: Voice & Audio -->
+            <LinearLayout
+                android:id="@+id/rowVoice"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_speaker"
+                        app:tint="@color/warm_white" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Voice &amp; Audio"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Input device &amp; noise suppression"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <Button
+        <!-- Section: LEGAL & POLICIES -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="22dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="10dp"
+            android:text="LEGAL &amp; POLICIES"
+            android:textColor="#949BA4"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_account_card"
+            android:orientation="vertical">
+
+            <!-- Row: Privacy Policy -->
+            <LinearLayout
+                android:id="@+id/rowPrivacyPolicy"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_shield_privacy"
+                        app:tint="#8B5CF6" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Privacy Policy"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="How Yappy collects and protects your data"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="68dp"
+                android:background="#313338" />
+
+            <!-- Row: Terms and Conditions -->
+            <LinearLayout
+                android:id="@+id/rowTermsConditions"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_icon_circle">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_terms_document"
+                        app:tint="#8B5CF6" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Terms &amp; Conditions"
+                        android:textColor="@color/warm_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Platform terms, guidelines and agreement"
+                        android:textColor="#949BA4"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/forward_arrow"
+                    app:tint="#6D737C" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Section: SESSION & LOGOUT -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="22dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="10dp"
+            android:text="SESSION"
+            android:textColor="#949BA4"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="16dp"
             android:backgroundTint="#ED4245"
             android:text="Log Out"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_logout"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/white" />
+
+        <!-- App Footer Info -->
+        <TextView
+            android:id="@+id/tvAppVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Yappy v1.0 • Connected to Smart Community"
+            android:textColor="#6D737C"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/support_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="7dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/warm_white"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="Help &amp; Support"
+            android:textColor="@color/warm_white"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2B2D31" />
+
+    <!-- Simple Document View -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="48dp">
+
+            <!-- Title & Intro -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Help &amp; Support"
+                android:textColor="@color/warm_white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="We're here to help!"
+                android:textColor="#8B5CF6"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Having trouble using Yappy? Have a question, suggestion, or encountered a bug? We're always happy to hear from you.\n\nOur goal is to make your experience on Yappy smooth, simple, and enjoyable."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 1. Frequently Asked Questions -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="1. Frequently Asked Questions"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <!-- Q1 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Q. How do I create an account?"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.35"
+                android:text="You can create an account using your email address and password through the Sign Up page."
+                android:textColor="#DBDEE1"
+                android:textSize="14sp" />
+
+            <!-- Q2 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Q. I forgot my password. What should I do?"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.35"
+                android:text="Use the Forgot Password option on the login screen to reset your account password, if available."
+                android:textColor="#DBDEE1"
+                android:textSize="14sp" />
+
+            <!-- Q3 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Q. How can I update my profile?"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.35"
+                android:text="Navigate to the Account section to view or update your available profile information."
+                android:textColor="#DBDEE1"
+                android:textSize="14sp" />
+
+            <!-- Q4 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Q. Can I delete my account?"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.35"
+                android:text="You can contact our support team to request account deletion."
+                android:textColor="#DBDEE1"
+                android:textSize="14sp" />
+
+            <!-- Q5 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Q. How can I report inappropriate content or a user?"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:lineSpacingMultiplier="1.35"
+                android:text="Contact our support team with relevant details so the issue can be reviewed."
+                android:textColor="#DBDEE1"
+                android:textSize="14sp" />
+
+            <!-- 2. Report a Problem -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="2. Report a Problem"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Experiencing an issue with:\n• Login or registration?\n• Sending or receiving messages?\n• Account information?\n• Application performance?\n• Community functionality?\n\nLet us know about the issue so we can investigate and improve Yappy."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 3. Share Your Feedback -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="3. Share Your Feedback"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Your feedback helps us improve!\n\nIf you have ideas for new features, improvements, or suggestions, feel free to share them with our development team."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 4. Contact Support -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="4. Contact Support"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="For assistance, questions, or technical issues, reach out to us:"
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <TextView
+                android:id="@+id/tvSupportEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Support Email: appdevtrial2007@gmail.com"
+                android:textColor="#8B5CF6"
+                android:textSize="14.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Replace this with your actual support email before publishing."
+                android:textColor="#949BA4"
+                android:textSize="12.5sp" />
+
+            <!-- 5. Response Time -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="5. Response Time"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="We aim to review support requests as soon as possible. Response times may vary depending on the nature and complexity of the issue."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- Closing -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="Thank You for Being Part of Yappy!"
+                android:textColor="@color/warm_white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Your feedback and support help us build a better communication experience.\n\nYappy – Stay Connected!"
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

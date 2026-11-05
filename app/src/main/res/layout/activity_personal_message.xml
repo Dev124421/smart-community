@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,7 +17,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingTop="36dp"
-        app:layout_constraintBottom_toTopOf="@id/account_schortcut"
+        app:layout_constraintBottom_toTopOf="@id/bottom_account_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <FrameLayout
@@ -25,12 +25,12 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/bg_card_dark"
-            android:backgroundTint="@color/pink"
+            android:backgroundTint="@color/purple"
             android:clickable="true"
             android:focusable="true">
 
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="28dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_dm"
@@ -59,7 +59,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bg_card_dark"
-            android:backgroundTint="@color/pink"
             android:clickable="true"
             android:focusable="true">
 
@@ -79,7 +78,7 @@
         android:background="@drawable/bg_home"
         android:paddingHorizontal="25dp"
         android:paddingTop="16dp"
-        app:layout_constraintBottom_toTopOf="@id/account_schortcut"
+        app:layout_constraintBottom_toTopOf="@id/bottom_account_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/left_rail"
         app:layout_constraintTop_toTopOf="parent">
@@ -232,90 +231,12 @@
             tools:listitem="@layout/item_conversation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/account_schortcut"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/bottom_account_bar"
+        android:name="com.example.yappy.BottomAccountBarFragment"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/black"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingHorizontal="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <FrameLayout
-            android:id="@+id/avatar_container"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/dm_account_logo" />
-
-            <View
-                android:id="@+id/status_dot"
-                android:layout_width="11dp"
-                android:layout_height="11dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/online" />
-        </FrameLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/avatar_container"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="User"
-                    android:textColor="@color/warm_white"
-                    android:textSize="13.5sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="4dp"
-                    android:rotation="90"
-                    android:src="@drawable/forward_arrow"
-                    app:tint="@color/soft_border" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_user_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                android:textColor="@color/soft_border"
-                android:textSize="10.5sp" />
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/notification"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/notification"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

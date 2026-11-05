@@ -1,4 +1,4 @@
-﻿package com.example.yappy.adapter
+package com.example.yappy.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import com.example.yappy.CommunityColorHelper
 import com.example.yappy.R
 import com.example.yappy.model.Community
 
-/** Small squircle icons in the left rail representing joined/created communities with vibrant colors. */
 class ServerRailAdapter(
     private var items: List<Community>,
     private var selectedId: String? = null,

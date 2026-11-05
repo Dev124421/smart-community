@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -103,6 +103,9 @@ class SignUpActivity : AppCompatActivity() {
             getSharedPreferences("user_session", MODE_PRIVATE).edit()
                 .putString("name", fullName)
                 .putString("email", email)
+                .apply()
+            getSharedPreferences("user_profiles", MODE_PRIVATE).edit()
+                .putString(email, fullName)
                 .apply()
 
             setLoading(true)

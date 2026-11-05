@@ -17,7 +17,7 @@ object ApiClient {
 
     private val okHttp by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)   // Render free tier cold starts
+            .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor { chain ->
@@ -28,7 +28,7 @@ object ApiClient {
                 chain.proceed(request)
             }
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY   // remove before release: logs passwords and tokens
+                level = HttpLoggingInterceptor.Level.BODY
             })
             .build()
     }

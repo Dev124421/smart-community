@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -120,10 +120,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <LinearLayout
+                        android:id="@+id/card_hanging_out"
                         android:layout_width="160dp"
                         android:layout_height="170dp"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:orientation="vertical"
                         android:padding="12dp">
 
@@ -151,10 +154,13 @@
                             android:textSize="9.5sp" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/card_gaming"
                         android:layout_width="160dp"
                         android:layout_height="170dp"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:orientation="vertical"
                         android:padding="12dp">
 
@@ -178,6 +184,146 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Team up with friends, take on exciting challenges, and turn every match into a new memory."
+                            android:textColor="@color/soft_border"
+                            android:textSize="9.5sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/card_music"
+                        android:layout_width="160dp"
+                        android:layout_height="170dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_music" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Music"
+                            android:textColor="@color/warm_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Share tracks, collaborate on playlists, and vibe with other listeners."
+                            android:textColor="@color/soft_border"
+                            android:textSize="9.5sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/card_study"
+                        android:layout_width="160dp"
+                        android:layout_height="170dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_study" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Study &amp; Learn"
+                            android:textColor="@color/warm_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Study together, share notes, organize study sessions, and reach your goals."
+                            android:textColor="@color/soft_border"
+                            android:textSize="9.5sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/card_movie"
+                        android:layout_width="160dp"
+                        android:layout_height="170dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_movie" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Movie &amp; TV"
+                            android:textColor="@color/warm_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Host watch parties, talk about the latest releases, and rate favorite films."
+                            android:textColor="@color/soft_border"
+                            android:textSize="9.5sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/card_work"
+                        android:layout_width="160dp"
+                        android:layout_height="170dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_work_yappy" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Work &amp; Projects"
+                            android:textColor="@color/warm_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Collaborate on projects, manage tasks, brainstorm, and build together."
                             android:textColor="@color/soft_border"
                             android:textSize="9.5sp" />
                     </LinearLayout>
@@ -233,90 +379,12 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottom_account_bar"
+        android:name="com.example.yappy.BottomAccountBarFragment"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/black"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingHorizontal="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <FrameLayout
-            android:id="@+id/avatar_container"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/dm_account_logo" />
-
-            <View
-                android:id="@+id/status_dot"
-                android:layout_width="11dp"
-                android:layout_height="11dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/online" />
-        </FrameLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/avatar_container"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BOT-99"
-                    android:textColor="@color/warm_white"
-                    android:textSize="13.5sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="4dp"
-                    android:rotation="90"
-                    android:src="@drawable/forward_arrow"
-                    app:tint="@color/soft_border" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_user_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                android:textColor="@color/soft_border"
-                android:textSize="10.5sp" />
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/btn_notification"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/notification"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

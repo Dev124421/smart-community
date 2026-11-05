@@ -12,10 +12,6 @@ import com.example.yappy.CommunityColorHelper
 import com.example.yappy.R
 import com.example.yappy.model.ChatMessage
 
-/**
- * Discord-style chat messages:
- * All messages appear on the left with the sender's avatar, username, and timestamp displayed above the message text.
- */
 class ChatAdapter(
     private val items: MutableList<ChatMessage> = mutableListOf()
 ) : RecyclerView.Adapter<ChatAdapter.VH>() {
@@ -64,6 +60,12 @@ class ChatAdapter(
     }
 
     override fun getItemCount() = items.size
+
+    fun setMessages(newItems: List<ChatMessage>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
 
     fun add(message: ChatMessage) {
         items.add(message)

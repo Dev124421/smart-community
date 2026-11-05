@@ -1,8 +1,9 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -47,7 +48,6 @@ class homescreen : AppCompatActivity() {
 
         session = SessionManager(this)
 
-        showUsername()
         setupRecyclerViews()
         setupListeners()
     }
@@ -57,18 +57,6 @@ class homescreen : AppCompatActivity() {
         val localJoined = JoinedCommunityManager.getJoinedCommunities(this)
         railAdapter.submit(localJoined)
         loadCommunities()
-    }
-
-    private fun showUsername() {
-        val prefs = getSharedPreferences("user_session", MODE_PRIVATE)
-        val name = prefs.getString("name", null)
-        val email = prefs.getString("email", null)
-        val display = when {
-            !name.isNullOrBlank() -> name
-            !email.isNullOrBlank() -> email.substringBefore("@")
-            else -> null
-        }
-        if (display != null) binding.tvUsername.text = display
     }
 
     private fun setupRecyclerViews() {
@@ -156,6 +144,8 @@ class homescreen : AppCompatActivity() {
         val updated = JoinedCommunityManager.getJoinedCommunities(this)
         railAdapter.submit(updated)
 
+        com.example.yappy.storage.NotificationStore.addJoinedNotification(this, targetName)
+
         Toast.makeText(this, "Joined $targetName!", Toast.LENGTH_SHORT).show()
 
         val token = accessToken()
@@ -188,7 +178,7 @@ class homescreen : AppCompatActivity() {
         id = id,
         name = name,
         description = description,
-        onlineCount = category,                 // API has no "online" count, so show the category
+        onlineCount = category,
         membersCount = "$memberCount Members",
     )
 
@@ -251,13 +241,17 @@ class homescreen : AppCompatActivity() {
             startActivity(Intent(this, personalMessage::class.java))
         }
 
-        binding.btnNotification.setOnClickListener {
-            Toast.makeText(this, "No new notifications", Toast.LENGTH_SHORT).show()
+        val openTemplate = { templateName: String ->
+            startActivity(Intent(this, CreateServer2::class.java).apply {
+                putExtra("SERVER_TEMPLATE", templateName)
+            })
         }
-
-        binding.bottomAccountBar.setOnClickListener {
-            startActivity(Intent(this, Account::class.java))
-        }
+        binding.cardHangingOut.setOnClickListener { openTemplate("Hanging Out") }
+        binding.cardGaming.setOnClickListener { openTemplate("Gaming") }
+        binding.cardMusic.setOnClickListener { openTemplate("Music") }
+        binding.cardStudy.setOnClickListener { openTemplate("Study") }
+        binding.cardMovie.setOnClickListener { openTemplate("Movie") }
+        binding.cardWork.setOnClickListener { openTemplate("Work") }
     }
 
     companion object {

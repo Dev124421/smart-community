@@ -1,10 +1,6 @@
-﻿package com.example.yappy.api
+package com.example.yappy.api
 
 import com.google.gson.annotations.SerializedName
-
-/**
- * Models matching the Smart Community Postman API collection.
- */
 
 data class GetCommunitiesResponse(
     val success: Boolean,

@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,10 +7,6 @@ import com.example.yappy.model.Community
 import org.json.JSONArray
 import org.json.JSONObject
 
-/**
- * Manages persisted joined & created communities scoped strictly per user account.
- * Keeps communities persistent on the left rail while isolating different accounts.
- */
 object JoinedCommunityManager {
 
     private const val PREFS_NAME = "yappy_joined_communities"
@@ -19,7 +15,6 @@ object JoinedCommunityManager {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    /** Returns a unique storage key for the currently logged-in account */
     fun getAccountKey(context: Context): String {
         val sessionPrefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
         val email = sessionPrefs.getString("email", null)?.trim()?.lowercase()
@@ -100,10 +95,6 @@ object JoinedCommunityManager {
         )
     }
 
-    /**
-     * Synchronizes with backend without deleting communities the active user has joined/created.
-     * Updates metadata for known communities, and adds any server communities where isMember is true.
-     */
     @Synchronized
     fun syncWithBackend(context: Context, apiList: List<ApiCommunity>): List<Community> {
         val current = getJoinedCommunities(context).toMutableList()
@@ -143,6 +134,21 @@ object JoinedCommunityManager {
 
         saveJoinedCommunities(context, current)
         return current
+    }
+
+    @Synchronized
+    fun removeJoinedCommunity(context: Context, id: String?, name: String?): Boolean {
+        val current = getJoinedCommunities(context).toMutableList()
+        val removed = current.removeAll {
+            (!id.isNullOrBlank() && it.id == id) ||
+            (!name.isNullOrBlank() && it.name.trim().equals(name.trim(), ignoreCase = true))
+        }
+        if (removed) {
+            saveJoinedCommunities(context, current)
+            val communityName = name ?: "Community"
+            com.example.yappy.storage.NotificationStore.addLeftNotification(context, communityName)
+        }
+        return removed
     }
 
     @Synchronized

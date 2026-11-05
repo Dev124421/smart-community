@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Intent
 import android.os.Bundle
@@ -24,11 +24,6 @@ import com.example.yappy.api.CommunityApi
 import com.example.yappy.api.SessionManager
 import kotlin.concurrent.thread
 
-/**
- * Server Channel List screen (matching Discord's channel overview).
- * Displays all text and voice channels inside a community/server,
- * synchronizes with CommunityApi, and connects server navigation.
- */
 class ChannelListActivity : AppCompatActivity() {
 
     companion object {
@@ -73,7 +68,6 @@ class ChannelListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         refreshRail()
-        updateUserInfo()
     }
 
     private fun setupWindowInsets() {
@@ -95,12 +89,7 @@ class ChannelListActivity : AppCompatActivity() {
         val tvServerName = findViewById<TextView>(R.id.tv_server_name)
         tvServerName.text = communityName
         findViewById<View>(R.id.layout_server_header).setOnClickListener {
-            val recordIntent = Intent(this, ChannelRecordActivity::class.java).apply {
-                putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, "welcome-and-rules")
-                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
-                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
-            }
-            startActivity(recordIntent)
+            showServerOptionsDialog()
         }
         findViewById<View>(R.id.card_setup_progress).setOnClickListener {
             val setupIntent = Intent(this, SetUpFinish::class.java).apply {
@@ -130,13 +119,7 @@ class ChannelListActivity : AppCompatActivity() {
         findViewById<View>(R.id.btn_add_server).setOnClickListener {
             startActivity(Intent(this, CreateServer1::class.java))
         }
-        findViewById<View>(R.id.bottom_account_bar).setOnClickListener {
-            startActivity(Intent(this, Account::class.java))
-        }
 
-        findViewById<View>(R.id.btn_notification).setOnClickListener {
-            Toast.makeText(this, "No new notifications", Toast.LENGTH_SHORT).show()
-        }
         val etSearch = findViewById<EditText>(R.id.et_search_channel)
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -246,12 +229,14 @@ class ChannelListActivity : AppCompatActivity() {
             val intent = Intent(this, Rules::class.java).apply {
                 putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
                 putExtra(homescreen.EXTRA_COMMUNITY_NAME, communityName)
+                putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, normalized)
             }
             startActivity(intent)
         } else {
             val intent = Intent(this, ChatActivity::class.java).apply {
                 putExtra(ChatActivity.EXTRA_CHAT_NAME, "#$normalized")
                 putExtra(ChatActivity.EXTRA_LAST_MESSAGE, "Welcome to #$normalized!")
+                putExtra(ChatActivity.EXTRA_IS_MINE, false)
             }
             startActivity(intent)
         }
@@ -301,11 +286,46 @@ class ChannelListActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun updateUserInfo() {
-        val prefs = getSharedPreferences("user_session", MODE_PRIVATE)
-        val name = prefs.getString("name", null)
-            ?: prefs.getString("email", null)?.substringBefore("@")
-            ?: "BOT-99"
-        findViewById<TextView>(R.id.tv_account_username)?.text = name
+    private fun showServerOptionsDialog() {
+        val options = arrayOf("Server Overview & Rules", "Invite Members", "Leave Community")
+        AlertDialog.Builder(this)
+            .setTitle(communityName)
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        val recordIntent = Intent(this, ChannelRecordActivity::class.java).apply {
+                            putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, "welcome-and-rules")
+                            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
+                            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
+                        }
+                        startActivity(recordIntent)
+                    }
+                    1 -> {
+                        val addIntent = Intent(this, AddPeople::class.java).apply {
+                            putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
+                            putExtra("SERVER_NAME", communityName)
+                        }
+                        startActivity(addIntent)
+                    }
+                    2 -> {
+                        confirmLeaveCommunity()
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun confirmLeaveCommunity() {
+        AlertDialog.Builder(this)
+            .setTitle("Leave Community")
+            .setMessage("Are you sure you want to leave $communityName? You will lose access to its channels.")
+            .setPositiveButton("Leave") { _, _ ->
+                JoinedCommunityManager.removeJoinedCommunity(this, communityId, communityName)
+                Toast.makeText(this, "You left $communityName", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

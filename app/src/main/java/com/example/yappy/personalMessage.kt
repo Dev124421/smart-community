@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Intent
 import android.os.Bundle
@@ -46,7 +46,6 @@ class personalMessage : AppCompatActivity() {
 
         session = SessionManager(this)
 
-        showUsername()
         setupRecyclerViews()
         loadConversations()
         setupListeners()
@@ -55,18 +54,6 @@ class personalMessage : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadJoinedCommunities()
-    }
-
-    private fun showUsername() {
-        val prefs = getSharedPreferences("user_session", MODE_PRIVATE)
-        val name = prefs.getString("name", null)
-        val email = prefs.getString("email", null)
-        val display = when {
-            !name.isNullOrBlank() -> name
-            !email.isNullOrBlank() -> email.substringBefore("@")
-            else -> null
-        }
-        if (display != null) findViewById<TextView>(R.id.username).text = display
     }
 
     private fun setupRecyclerViews() {
@@ -130,6 +117,7 @@ class personalMessage : AppCompatActivity() {
         startActivity(Intent(this, ChatActivity::class.java).apply {
             putExtra(ChatActivity.EXTRA_CHAT_NAME, conversation.name)
             putExtra(ChatActivity.EXTRA_LAST_MESSAGE, conversation.lastMessage)
+            putExtra(ChatActivity.EXTRA_IS_MINE, false)
         })
     }
 
@@ -205,15 +193,7 @@ class personalMessage : AppCompatActivity() {
         findViewById<View>(R.id.search)?.setOnClickListener {
             Toast.makeText(this, "Search coming soon", Toast.LENGTH_SHORT).show()
         }
-        findViewById<View>(R.id.notification)?.setOnClickListener {
-            Toast.makeText(this, "No new notifications", Toast.LENGTH_SHORT).show()
-        }
-
         findViewById<View>(R.id.export)?.setOnClickListener { shareInvite() }
         findViewById<View>(R.id.share)?.setOnClickListener { shareInvite() }
-
-        findViewById<View>(R.id.account_schortcut)?.setOnClickListener {
-            startActivity(Intent(this, Account::class.java))
-        }
     }
 }

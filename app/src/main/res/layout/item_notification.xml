@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    android:background="@drawable/bg_account_card"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header Row (Icon, Title, Unread Indicator, Time) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/icon_frame"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_icon_circle">
+
+            <ImageView
+                android:id="@+id/iv_notif_type"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/verified"
+                app:tint="@color/green" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_notif_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/warm_white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Joined Community" />
+
+                <View
+                    android:id="@+id/dot_unread"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_status_online"
+                    android:backgroundTint="@color/purple"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_notif_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="#949BA4"
+                android:textSize="11.5sp"
+                tools:text="10m ago" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Message Body -->
+    <TextView
+        android:id="@+id/tv_notif_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="#DBDEE1"
+        android:textSize="13.5sp"
+        tools:text="You successfully joined Gaming Central. Say hello in #general!" />
+
+    <!-- Friend Request Action Row (Accept / Decline) -->
+    <LinearLayout
+        android:id="@+id/layout_friend_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_accept_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:backgroundTint="@color/purple"
+            android:paddingHorizontal="16dp"
+            android:text="Accept"
+            android:textColor="#101010"
+            android:textSize="12.5sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_decline_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#2B2D31"
+            android:paddingHorizontal="16dp"
+            android:text="Decline"
+            android:textColor="@color/warm_white"
+            android:textSize="12.5sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+    <!-- Resolved Friend Status (Accepted / Declined) -->
+    <TextView
+        android:id="@+id/tv_friend_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_badge_pill"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/green"
+        android:textSize="11.5sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="✓ Friend Request Accepted" />
+
+</LinearLayout>

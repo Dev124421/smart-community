@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yappy.R
 import com.example.yappy.model.Conversation
 
-/** Direct-message list shown on the personalMessage screen. */
 class ConversationAdapter(
     private val items: MutableList<Conversation>,
     private val onClick: (Conversation) -> Unit

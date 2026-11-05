@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/privacy_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="7dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/warm_white"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="Privacy Policy"
+            android:textColor="@color/warm_white"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2B2D31" />
+
+    <!-- Simple Document View -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="48dp">
+
+            <!-- Title & Date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy Policy"
+                android:textColor="@color/warm_white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Last Updated: November 5, 2026"
+                android:textColor="#949BA4"
+                android:textSize="13sp" />
+
+            <!-- Intro -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Welcome to Yappy! Your privacy is important to us. This Privacy Policy explains how Yappy collects, uses, stores, and protects your information when you use our application.\n\nBy using Yappy, you agree to the practices described in this policy."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 1. Information We Collect -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="1. Information We Collect"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy may collect the following information:\n\n• Account Information: Your name, email address, username, and password during registration.\n\n• Profile Information: Profile pictures and other details you choose to share.\n\n• Messages: Text messages and content you send through chats or communities.\n\n• Usage Information: Basic application activity and interaction data to improve the user experience.\n\n• Device Information: Basic technical information required for application functionality and troubleshooting."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 2. How We Use Your Information -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="2. How We Use Your Information"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="We use collected information to:\n\n• Create and manage user accounts.\n• Allow users to communicate through private chats and communities.\n• Display usernames and profile information.\n• Maintain application security.\n• Improve application performance and user experience.\n• Troubleshoot technical issues."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 3. Data Storage and Security -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="3. Data Storage and Security"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy takes reasonable measures to protect user information from unauthorized access, modification, or disclosure.\n\nUser information may be stored using third-party services and cloud databases required for application functionality.\n\nHowever, no digital platform can guarantee complete data security."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 4. Sharing of Information -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="4. Sharing of Information"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy does not intentionally sell personal user information.\n\nInformation may be shared with service providers when necessary to operate the application, comply with legal requirements, or protect users and the platform."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 5. User Responsibilities -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="5. User Responsibilities"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Users are responsible for:\n\n• Keeping their account credentials secure.\n• Avoiding the sharing of sensitive personal information in public chats.\n• Reporting suspicious or abusive activities.\n• Ensuring that the information they share does not violate anyone else's privacy."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 6. Data Retention and Account Deletion -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="6. Data Retention and Account Deletion"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy may retain account information and messages for as long as necessary to provide its services.\n\nUsers may request account deletion. Associated information will be deleted or anonymized where reasonably possible, subject to applicable legal and technical requirements."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 7. Third-Party Services -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="7. Third-Party Services"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy may use third-party services for authentication, database management, hosting, and other application features.\n\nThese services may process certain information according to their own privacy policies."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 8. Children's Privacy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="8. Children's Privacy"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Yappy is not intended for children under the age permitted by applicable law. We do not knowingly collect personal information from children in violation of applicable legal requirements."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 9. Changes to This Policy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="9. Changes to This Policy"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="We may update this Privacy Policy whenever necessary. Updated versions will be made available within the application."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- 10. Contact Us -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="10. Contact Us"
+                android:textColor="@color/warm_white"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="If you have questions or concerns regarding this Privacy Policy, you can contact the Yappy development team through the application's support or contact section."
+                android:textColor="#DBDEE1"
+                android:textSize="14.5sp" />
+
+            <!-- Conclusion -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="Thank you for using Yappy!"
+                android:textColor="@color/warm_white"
+                android:textSize="15.5sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

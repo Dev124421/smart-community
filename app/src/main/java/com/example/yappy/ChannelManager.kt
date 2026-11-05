@@ -1,4 +1,4 @@
-﻿package com.example.yappy
+package com.example.yappy
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,11 +8,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.concurrent.thread
 
-/**
- * Manages persisted channels for each server/community and syncs with CommunityApi.
- * Guarantees every community maintains a record of its channels and seeds #general
- * and #welcome-and-rules by default.
- */
 object ChannelManager {
 
     private const val PREFS_NAME = "yappy_community_channels"
@@ -118,12 +113,6 @@ object ChannelManager {
         saveChannels(context, communityId, current)
     }
 
-    /**
-     * Synchronizes community channels with CommunityApi:
-     * 1. Fetches channels from API
-     * 2. If remote channels are empty, creates default #general and #welcome-and-rules on server
-     * 3. Merges and persists locally
-     */
     fun syncWithApi(
         context: Context,
         token: String,
