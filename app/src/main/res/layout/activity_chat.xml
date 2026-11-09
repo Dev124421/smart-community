@@ -58,6 +58,19 @@
                 android:textColor="@color/soft_border"
                 android:textSize="11sp" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_channel_members"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            android:src="@drawable/ic_group_add"
+            android:contentDescription="Channel Members"
+            app:tint="@color/warm_white" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

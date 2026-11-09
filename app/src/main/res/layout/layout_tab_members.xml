@@ -8,6 +8,8 @@
     android:paddingHorizontal="25dp"
     android:paddingTop="15dp"
     android:paddingBottom="25dp">
+
+    <!-- Set up server / invite shortcut -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_setup_server"
         android:layout_width="match_parent"
@@ -25,7 +27,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="14dp"
-            android:paddingVertical="14dp">
+            android:paddingVertical="12dp">
+
             <FrameLayout
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -45,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_weight="1"
-                android:text="Set up your server"
+                android:text="Invite members to server"
                 android:textColor="@color/warm_white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -57,72 +60,59 @@
                 app:tint="@color/soft_border" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <!-- Search / Filter Members Box -->
+    <LinearLayout
+        android:id="@+id/layout_search_box"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/input_box_2"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/search"
+            app:tint="@color/soft_border" />
+
+        <EditText
+            android:id="@+id/et_search_members"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:background="@null"
+            android:hint="Search members by name or ID..."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/warm_white"
+            android:textColorHint="@color/soft_border"
+            android:textSize="13.5sp" />
+    </LinearLayout>
+
+    <!-- Empty State Text (if search has 0 results) -->
     <TextView
-        android:id="@+id/tv_online_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:text="Online — 1"
-        android:textColor="@color/soft_border"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_member_item"
+        android:id="@+id/tv_empty_members"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#232428"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp">
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="No members found matching your search"
+        android:textColor="@color/soft_border"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="14dp"
-            android:paddingVertical="12dp">
-
-            <FrameLayout
-                android:layout_width="32dp"
-                android:layout_height="32dp">
-
-                <FrameLayout
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_circle_button"
-                    android:backgroundTint="@color/pink">
-
-                    <TextView
-                        android:id="@+id/tv_member_avatar_initial"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="S"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-                </FrameLayout>
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_gravity="bottom|end"
-                    android:background="@drawable/online" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tv_member_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:text="BOT-99"
-                android:textColor="@color/warm_white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    <!-- Members RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_members"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="never" />
 
 </LinearLayout>

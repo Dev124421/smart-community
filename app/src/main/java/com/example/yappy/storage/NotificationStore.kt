@@ -44,11 +44,12 @@ object NotificationStore {
 
         val list = parseList(jsonStr)
 
-        // Clean out any legacy demo test entries if present from previous runs
+        // Clean out any legacy demo test entries or verification spam if present
         val cleaned = list.filterNot {
             it.targetName.equals("Alex Johnson", ignoreCase = true) ||
             it.targetName.equals("Sarah Miller", ignoreCase = true) ||
-            it.targetName.equals("Night Owls Study Club", ignoreCase = true)
+            it.targetName.equals("Night Owls Study Club", ignoreCase = true) ||
+            it.type == NotificationType.ACCOUNT_VERIFIED
         }.toMutableList()
 
         if (cleaned.size != list.size) {
@@ -99,8 +100,9 @@ object NotificationStore {
             ?: email?.substringBefore("@")
             ?: "User"
 
+        val notifPrefs = getPrefs(context)
         val notifFlagKey = "init_notif_added_" + getAccountKey(context)
-        val alreadyAdded = sessionPrefs.getBoolean(notifFlagKey, false)
+        val alreadyAdded = notifPrefs.getBoolean(notifFlagKey, false)
         if (alreadyAdded) return
 
         val now = System.currentTimeMillis()
@@ -113,20 +115,25 @@ object NotificationStore {
                 targetName = name,
                 timestamp = now,
                 isRead = false
-            ),
-            NotificationItem(
-                id = UUID.randomUUID().toString(),
-                type = NotificationType.ACCOUNT_VERIFIED,
-                title = "Account Verified",
-                message = "Your account has been successfully verified. Welcome aboard!",
-                targetName = email ?: name,
-                timestamp = now - 1000,
-                isRead = false
             )
         )
 
-        sessionPrefs.edit().putBoolean(notifFlagKey, true).apply()
+        notifPrefs.edit().putBoolean(notifFlagKey, true).apply()
         saveAll(context, initialList)
+    }
+
+    @Synchronized
+    fun addServerDeletedNotification(context: Context, communityName: String) {
+        val item = NotificationItem(
+            id = UUID.randomUUID().toString(),
+            type = NotificationType.SYSTEM,
+            title = "Server Deleted",
+            message = "Server '$communityName' was permanently deleted.",
+            targetName = communityName,
+            timestamp = System.currentTimeMillis(),
+            isRead = false
+        )
+        addNotification(context, item)
     }
 
     @Synchronized

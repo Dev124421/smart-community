@@ -113,6 +113,12 @@ object ChannelManager {
         saveChannels(context, communityId, current)
     }
 
+    @Synchronized
+    fun removeCommunityChannels(context: Context, communityId: String) {
+        val safeId = if (communityId.isBlank()) "default_community" else communityId
+        getPrefs(context).edit().remove("channels_$safeId").apply()
+    }
+
     fun syncWithApi(
         context: Context,
         token: String,

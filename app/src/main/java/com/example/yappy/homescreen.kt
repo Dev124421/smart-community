@@ -105,10 +105,18 @@ class homescreen : AppCompatActivity() {
                         memberIds.clear()
                         memberIds.addAll(allJoined.map { it.id })
 
-                        val unjoined = list.filter { apiComm ->
+                        val unjoinedRemote = list.filter { apiComm ->
                             !JoinedCommunityManager.isJoined(this@homescreen, apiComm.id, apiComm.name)
+                        }.map { it.toModel() }
+
+                        val localDiscoverable = JoinedCommunityManager.getDiscoverableCommunities(this@homescreen)
+                            .filter { !JoinedCommunityManager.isJoined(this@homescreen, it.id, it.name) }
+
+                        val combined = (unjoinedRemote + localDiscoverable).distinctBy {
+                            if (it.id.isNotBlank()) it.id else it.name.lowercase().trim()
                         }
-                        communityAdapter.updateList(unjoined.map { it.toModel() })
+
+                        communityAdapter.updateList(combined)
                     }
                 }.onFailure { 
                     loadPreviewCommunities()
@@ -123,13 +131,10 @@ class homescreen : AppCompatActivity() {
         memberIds.addAll(joined.map { it.id })
         railAdapter.submit(joined)
 
-        val defaultOthers = listOf(
-            Community("3", "Study Lounge", "Collaborate on homework and projects", "Education", "12K Members"),
-            Community("4", "Anime & Manga", "Discuss latest episodes and releases", "Entertainment", "88K Members"),
-            Community("5", "Dev Hangout", "Kotlin, Android & Full Stack discussions", "Tech", "34K Members")
-        ).filter { !JoinedCommunityManager.isJoined(this, it.id, it.name) }
+        val discoverable = JoinedCommunityManager.getDiscoverableCommunities(this)
+            .filter { !JoinedCommunityManager.isJoined(this, it.id, it.name) }
 
-        communityAdapter.updateList(defaultOthers)
+        communityAdapter.updateList(discoverable)
     }
 
     private fun joinCommunity(communityId: String, communityName: String?) {

@@ -180,13 +180,7 @@ class Rules : AppCompatActivity(), ChatWebSocketCallback {
     }
 
     private fun loadSavedMessages() {
-        var saved = ChatMessageStore.getMessages(this, chatKey)
-        if (saved.isEmpty() && activeChannelName.isNotBlank()) {
-            saved = ChatMessageStore.getMessages(this, activeChannelName)
-            if (saved.isEmpty()) {
-                saved = ChatMessageStore.getMessages(this, "#$activeChannelName")
-            }
-        }
+        val saved = ChatMessageStore.getMessages(this, chatKey)
         if (saved.isNotEmpty()) {
             chatAdapter.setMessages(saved)
             scrollToBottom()

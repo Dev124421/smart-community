@@ -273,7 +273,6 @@ class Account : AppCompatActivity() {
     }
 
     private fun finishLogout() {
-        JoinedCommunityManager.clearCurrent(this)
         session.clear()
         getSharedPreferences("user_session", MODE_PRIVATE).edit().clear().apply()
 

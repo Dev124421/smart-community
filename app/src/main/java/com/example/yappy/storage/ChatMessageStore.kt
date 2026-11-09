@@ -62,6 +62,19 @@ object ChatMessageStore {
             .apply()
     }
 
+    fun clearServerMessages(context: Context, communityId: String) {
+        if (communityId.isBlank()) return
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val prefix = "chat_" + communityId.lowercase().replace(" ", "_").replace("#", "")
+        val editor = prefs.edit()
+        for (k in prefs.all.keys) {
+            if (k.startsWith(prefix)) {
+                editor.remove(k)
+            }
+        }
+        editor.apply()
+    }
+
     private fun normalizeKey(key: String): String =
         "chat_" + key.lowercase().replace(" ", "_").replace("#", "")
 }

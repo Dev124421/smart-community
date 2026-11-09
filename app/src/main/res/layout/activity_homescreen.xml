@@ -368,6 +368,7 @@
                 android:text="Check out these servers we think you may like. Find game tips, teammates and more."
                 android:textColor="@color/soft_border"
                 android:textSize="11.5sp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_joined_communities"
                 android:layout_width="match_parent"

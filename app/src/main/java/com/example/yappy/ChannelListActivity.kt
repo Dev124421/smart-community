@@ -1,9 +1,13 @@
 package com.example.yappy
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,6 +26,9 @@ import com.example.yappy.adapter.ServerRailAdapter
 import com.example.yappy.api.Channel
 import com.example.yappy.api.CommunityApi
 import com.example.yappy.api.SessionManager
+import com.example.yappy.storage.ChatMessageStore
+import com.example.yappy.storage.NotificationStore
+import com.example.yappy.storage.ServerMemberStore
 import kotlin.concurrent.thread
 
 class ChannelListActivity : AppCompatActivity() {
@@ -174,7 +181,13 @@ class ChannelListActivity : AppCompatActivity() {
     }
 
     private fun setupChannelAdapters() {
-        textChannelAdapter = ChannelAdapter(emptyList(), activeChannelId = "default_welcome") { channel ->
+        textChannelAdapter = ChannelAdapter(
+            emptyList(),
+            activeChannelId = "default_welcome",
+            onChannelLongClick = { channel ->
+                openChannelRecord(channel.name)
+            }
+        ) { channel ->
             openChannel(channel)
         }
         rvTextChannels.adapter = textChannelAdapter
@@ -183,6 +196,15 @@ class ChannelListActivity : AppCompatActivity() {
             openVoiceChannel(channel)
         }
         rvVoiceChannels.adapter = voiceChannelAdapter
+    }
+
+    private fun openChannelRecord(channelName: String) {
+        val recordIntent = Intent(this, ChannelRecordActivity::class.java).apply {
+            putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, channelName)
+            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
+            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
+        }
+        startActivity(recordIntent)
     }
 
     private fun loadChannels() {
@@ -237,6 +259,8 @@ class ChannelListActivity : AppCompatActivity() {
                 putExtra(ChatActivity.EXTRA_CHAT_NAME, "#$normalized")
                 putExtra(ChatActivity.EXTRA_LAST_MESSAGE, "Welcome to #$normalized!")
                 putExtra(ChatActivity.EXTRA_IS_MINE, false)
+                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
+                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
             }
             startActivity(intent)
         }
@@ -286,34 +310,116 @@ class ChannelListActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun isServerOwner(): Boolean {
+        return JoinedCommunityManager.isOwner(this, communityId, communityName)
+    }
+
     private fun showServerOptionsDialog() {
-        val options = arrayOf("Server Overview & Rules", "Invite Members", "Leave Community")
+        val isOwner = isServerOwner()
+        val deleteSpan = SpannableString("Delete Server").apply {
+            setSpan(ForegroundColorSpan(Color.parseColor("#FF5252")), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        val options: Array<CharSequence> = if (isOwner) {
+            arrayOf(
+                "Server Overview & Rules",
+                "Invite Members",
+                "Server Setup & Settings",
+                deleteSpan
+            )
+        } else {
+            arrayOf(
+                "Server Overview & Rules",
+                "Invite Members",
+                "Leave Community"
+            )
+        }
+
         AlertDialog.Builder(this)
             .setTitle(communityName)
             .setItems(options) { _, which ->
-                when (which) {
-                    0 -> {
-                        val recordIntent = Intent(this, ChannelRecordActivity::class.java).apply {
-                            putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, "welcome-and-rules")
-                            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
-                            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
-                        }
-                        startActivity(recordIntent)
+                if (isOwner) {
+                    when (which) {
+                        0 -> openServerOverview()
+                        1 -> openInviteMembers()
+                        2 -> openServerSettings()
+                        3 -> confirmDeleteServer()
                     }
-                    1 -> {
-                        val addIntent = Intent(this, AddPeople::class.java).apply {
-                            putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
-                            putExtra("SERVER_NAME", communityName)
-                        }
-                        startActivity(addIntent)
-                    }
-                    2 -> {
-                        confirmLeaveCommunity()
+                } else {
+                    when (which) {
+                        0 -> openServerOverview()
+                        1 -> openInviteMembers()
+                        2 -> confirmLeaveCommunity()
                     }
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun openServerOverview() {
+        val recordIntent = Intent(this, ChannelRecordActivity::class.java).apply {
+            putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, "welcome-and-rules")
+            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
+            putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
+        }
+        startActivity(recordIntent)
+    }
+
+    private fun openInviteMembers() {
+        val addIntent = Intent(this, AddPeople::class.java).apply {
+            putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
+            putExtra("SERVER_NAME", communityName)
+        }
+        startActivity(addIntent)
+    }
+
+    private fun openServerSettings() {
+        val setupIntent = Intent(this, SetUpFinish::class.java).apply {
+            putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
+            putExtra("SERVER_NAME", communityName)
+        }
+        startActivity(setupIntent)
+    }
+
+    private fun confirmDeleteServer() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Delete '$communityName'?")
+            .setMessage("Are you sure you want to delete this server?\n\nThis action cannot be undone. All channels, messages, and member data will be permanently deleted.")
+            .setPositiveButton("Delete Server") { _, _ ->
+                performDeleteServer()
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#FF5252"))
+    }
+
+    private fun performDeleteServer() {
+        // 1. Remove from joined/owned communities
+        JoinedCommunityManager.removeJoinedCommunity(this, communityId, communityName)
+        // Permanently remove from discoverable pool as well so deleted server does not show in explore
+        JoinedCommunityManager.removeDiscoverableCommunity(this, communityId, communityName)
+
+        // 2. Clear saved channels
+        ChannelManager.removeCommunityChannels(this, communityId)
+
+        // 3. Clear all chat messages for this server
+        ChatMessageStore.clearServerMessages(this, communityId)
+        if (communityName.isNotBlank() && communityName != "Server") {
+            ChatMessageStore.clearServerMessages(this, communityName)
+        }
+
+        // 4. Clear member roster
+        ServerMemberStore.removeCommunityMembers(this, communityId)
+        ServerMemberStore.removeCommunityMembers(this, communityName)
+
+        // 5. Record audit notification
+        NotificationStore.addServerDeletedNotification(this, communityName)
+
+        Toast.makeText(this, "Server '$communityName' deleted successfully", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     private fun confirmLeaveCommunity() {

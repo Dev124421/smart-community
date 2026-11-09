@@ -57,13 +57,12 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/bg_card_dark"
-            android:backgroundTint="@color/pink"
             android:clickable="true"
             android:focusable="true">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="28dp"
+                android:layout_height="19dp"
                 android:layout_gravity="center"
                 android:src="@drawable/add"
                 app:tint="@color/white" />

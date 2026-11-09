@@ -97,7 +97,8 @@ class CreateServer3 : AppCompatActivity() {
                     name = name,
                     description = description,
                     category = serverTemplate,
-                    memberCount = "1 Member"
+                    memberCount = "1 Member",
+                    isOwner = true
                 )
                 ChannelManager.saveChannels(this, localId, ChannelManager.getDefaultChannels())
                 com.example.yappy.storage.NotificationStore.addCommunityCreatedNotification(this, name)
@@ -126,7 +127,8 @@ class CreateServer3 : AppCompatActivity() {
                             name = createdCommunity.name,
                             description = createdCommunity.description,
                             category = createdCommunity.category,
-                            memberCount = "1 Member"
+                            memberCount = "1 Member",
+                            isOwner = true
                         )
                         ChannelManager.saveChannels(this, createdCommunity.id, ChannelManager.getDefaultChannels())
                         thread {
@@ -150,7 +152,8 @@ class CreateServer3 : AppCompatActivity() {
                             name = name,
                             description = description,
                             category = serverTemplate,
-                            memberCount = "1 Member"
+                            memberCount = "1 Member",
+                            isOwner = true
                         )
                         ChannelManager.saveChannels(this, localId, ChannelManager.getDefaultChannels())
                         Toast.makeText(this, "Server created: ${error.message}", Toast.LENGTH_SHORT).show()

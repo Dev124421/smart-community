@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_member_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="3dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="#232428"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="10dp">
+
+        <!-- Avatar with Presence Dot -->
+        <FrameLayout
+            android:layout_width="38dp"
+            android:layout_height="38dp">
+
+            <FrameLayout
+                android:id="@+id/layout_member_avatar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_circle_button"
+                android:backgroundTint="@color/pink">
+
+                <TextView
+                    android:id="@+id/tv_member_avatar_initial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="D" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/iv_presence_dot"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/bg_status_online" />
+        </FrameLayout>
+
+        <!-- Name and ID/Handle -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_member_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/warm_white"
+                android:textSize="14.5sp"
+                android:textStyle="bold"
+                tools:text="Dev Bansal" />
+
+            <TextView
+                android:id="@+id/tv_member_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/soft_border"
+                android:textSize="12sp"
+                tools:text="@dev2007 • ID: #usr_self" />
+        </LinearLayout>
+
+        <!-- Role Badge -->
+        <TextView
+            android:id="@+id/tv_member_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_badge_pill"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:textColor="@color/pink"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="👑 Owner" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

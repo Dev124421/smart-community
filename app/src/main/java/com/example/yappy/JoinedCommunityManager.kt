@@ -72,6 +72,8 @@ object JoinedCommunityManager {
             current.add(community)
         }
         saveJoinedCommunities(context, current)
+        // Register in discoverable pool so if left later it returns to discoverable list
+        addDiscoverableCommunity(context, community)
     }
 
     @Synchronized
@@ -81,8 +83,12 @@ object JoinedCommunityManager {
         name: String,
         description: String = "",
         category: String = "General",
-        memberCount: String = "1 Member"
+        memberCount: String = "1 Member",
+        isOwner: Boolean = false
     ) {
+        if (isOwner || id.startsWith("local_")) {
+            setServerOwner(context, id, name)
+        }
         addJoinedCommunity(
             context,
             Community(
@@ -93,6 +99,36 @@ object JoinedCommunityManager {
                 membersCount = memberCount
             )
         )
+    }
+
+    @Synchronized
+    fun setServerOwner(context: Context, communityId: String, communityName: String) {
+        val prefs = getPrefs(context)
+        val key = getAccountKey(context)
+        val ownedSet = prefs.getStringSet("owned_servers_$key", mutableSetOf())?.toMutableSet() ?: mutableSetOf()
+        if (communityId.isNotBlank()) ownedSet.add(communityId)
+        if (communityName.isNotBlank()) ownedSet.add(communityName.trim().lowercase())
+        prefs.edit().putStringSet("owned_servers_$key", ownedSet).apply()
+    }
+
+    @Synchronized
+    fun isOwner(context: Context, communityId: String, communityName: String): Boolean {
+        val prefs = getPrefs(context)
+        val key = getAccountKey(context)
+        val ownedSet = prefs.getStringSet("owned_servers_$key", emptySet()) ?: emptySet()
+        if (communityId.isNotBlank() && ownedSet.contains(communityId)) return true
+        if (communityName.isNotBlank() && ownedSet.contains(communityName.trim().lowercase())) return true
+        return false
+    }
+
+    @Synchronized
+    fun removeServerOwner(context: Context, communityId: String, communityName: String) {
+        val prefs = getPrefs(context)
+        val key = getAccountKey(context)
+        val ownedSet = prefs.getStringSet("owned_servers_$key", mutableSetOf())?.toMutableSet() ?: mutableSetOf()
+        if (communityId.isNotBlank()) ownedSet.remove(communityId)
+        if (communityName.isNotBlank()) ownedSet.remove(communityName.trim().lowercase())
+        prefs.edit().putStringSet("owned_servers_$key", ownedSet).apply()
     }
 
     @Synchronized
@@ -114,7 +150,7 @@ object JoinedCommunityManager {
             }
         }
         for (api in apiList) {
-            if (api.isMember) {
+            if (api.isMember || isOwner(context, api.id, api.name)) {
                 val exists = current.any {
                     it.id == api.id || it.name.trim().equals(api.name.trim(), ignoreCase = true)
                 }
@@ -136,15 +172,116 @@ object JoinedCommunityManager {
         return current
     }
 
+    private const val PREFS_DISCOVERABLE_KEY = "discoverable_pool"
+
+    fun getDefaultDiscoverable(): List<Community> = listOf(
+        Community("3", "Study Lounge", "Collaborate on homework and projects", "Education", "12K Members"),
+        Community("4", "Anime & Manga", "Discuss latest episodes and releases", "Entertainment", "88K Members"),
+        Community("5", "Dev Hangout", "Kotlin, Android & Full Stack discussions", "Tech", "34K Members")
+    )
+
     @Synchronized
-    fun removeJoinedCommunity(context: Context, id: String?, name: String?): Boolean {
-        val current = getJoinedCommunities(context).toMutableList()
+    fun getDiscoverableCommunities(context: Context): List<Community> {
+        val prefs = getPrefs(context)
+        val jsonString = prefs.getString(PREFS_DISCOVERABLE_KEY, null)
+        val list = mutableListOf<Community>()
+
+        // 1. Default initial communities
+        list.addAll(getDefaultDiscoverable())
+
+        // 2. Discoverable communities saved locally (including left communities)
+        if (!jsonString.isNullOrBlank()) {
+            try {
+                val arr = JSONArray(jsonString)
+                for (i in 0 until arr.length()) {
+                    val obj = arr.getJSONObject(i)
+                    val comm = Community(
+                        id = obj.optString("id"),
+                        name = obj.optString("name"),
+                        description = obj.optString("description"),
+                        onlineCount = obj.optString("category", "General"),
+                        membersCount = obj.optString("membersCount", "Explore Community")
+                    )
+                    val exists = list.any {
+                        (comm.id.isNotBlank() && it.id == comm.id) ||
+                        it.name.trim().equals(comm.name.trim(), ignoreCase = true)
+                    }
+                    if (!exists) {
+                        list.add(comm)
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+        return list
+    }
+
+    @Synchronized
+    fun addDiscoverableCommunity(context: Context, community: Community) {
+        val current = getDiscoverableCommunities(context).toMutableList()
+        val index = current.indexOfFirst {
+            (community.id.isNotBlank() && it.id == community.id) ||
+            it.name.trim().equals(community.name.trim(), ignoreCase = true)
+        }
+        if (index >= 0) {
+            current[index] = community
+        } else {
+            current.add(community)
+        }
+        saveDiscoverableCommunities(context, current)
+    }
+
+    @Synchronized
+    fun removeDiscoverableCommunity(context: Context, id: String?, name: String?) {
+        val current = getDiscoverableCommunities(context).toMutableList()
         val removed = current.removeAll {
             (!id.isNullOrBlank() && it.id == id) ||
             (!name.isNullOrBlank() && it.name.trim().equals(name.trim(), ignoreCase = true))
         }
         if (removed) {
+            saveDiscoverableCommunities(context, current)
+        }
+    }
+
+    @Synchronized
+    private fun saveDiscoverableCommunities(context: Context, list: List<Community>) {
+        try {
+            val jsonArray = JSONArray()
+            for (c in list) {
+                val obj = JSONObject().apply {
+                    put("id", c.id)
+                    put("name", c.name)
+                    put("description", c.description)
+                    put("category", c.onlineCount)
+                    put("membersCount", c.membersCount)
+                }
+                jsonArray.put(obj)
+            }
+            getPrefs(context).edit().putString(PREFS_DISCOVERABLE_KEY, jsonArray.toString()).apply()
+        } catch (_: Exception) {
+        }
+    }
+
+    @Synchronized
+    fun removeJoinedCommunity(context: Context, id: String?, name: String?): Boolean {
+        val current = getJoinedCommunities(context).toMutableList()
+        val target = current.find {
+            (!id.isNullOrBlank() && it.id == id) ||
+            (!name.isNullOrBlank() && it.name.trim().equals(name.trim(), ignoreCase = true))
+        }
+        val removed = current.removeAll {
+            (!id.isNullOrBlank() && it.id == id) ||
+            (!name.isNullOrBlank() && it.name.trim().equals(name.trim(), ignoreCase = true))
+        }
+        if (removed) {
+            removeServerOwner(context, id ?: "", name ?: "")
             saveJoinedCommunities(context, current)
+
+            // Return the left community to the discoverable pool so it appears in rv_joined_communities on homescreen
+            if (target != null) {
+                addDiscoverableCommunity(context, target.copy(membersCount = "Explore Community"))
+            }
+
             val communityName = name ?: "Community"
             com.example.yappy.storage.NotificationStore.addLeftNotification(context, communityName)
         }

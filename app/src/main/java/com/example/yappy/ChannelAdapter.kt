@@ -14,6 +14,7 @@ import com.example.yappy.api.Channel
 class ChannelAdapter(
     private var items: List<Channel>,
     private var activeChannelId: String? = null,
+    private val onChannelLongClick: ((Channel) -> Unit)? = null,
     private val onChannelClick: (Channel) -> Unit
 ) : RecyclerView.Adapter<ChannelAdapter.VH>() {
 
@@ -60,6 +61,15 @@ class ChannelAdapter(
             activeChannelId = channel.id
             notifyDataSetChanged()
             onChannelClick(channel)
+        }
+
+        holder.root.setOnLongClickListener {
+            if (onChannelLongClick != null) {
+                onChannelLongClick.invoke(channel)
+                true
+            } else {
+                false
+            }
         }
     }
 

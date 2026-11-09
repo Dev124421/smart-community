@@ -36,7 +36,18 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
 
     private var currentUserName: String = "You"
     private var chatName: String = "Chat"
+    private var communityId: String = ""
+    private var communityName: String = "Server"
     private var isTryingFallback = false
+
+    private val storageChatKey: String
+        get() = if (communityId.isNotBlank()) {
+            "${communityId}_${chatName.removePrefix("#").trim()}"
+        } else if (communityName.isNotBlank() && communityName != "Server" && communityName != "Community") {
+            "${communityName}_${chatName.removePrefix("#").trim()}"
+        } else {
+            chatName
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,20 +71,30 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
 
         chatName = intent.getStringExtra(EXTRA_CHAT_NAME) ?: "Chat"
         val lastMessage = intent.getStringExtra(EXTRA_LAST_MESSAGE)
+        communityId = intent.getStringExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID)
+            ?: intent.getStringExtra("community_id").orEmpty()
+        communityName = intent.getStringExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME)
+            ?: intent.getStringExtra("community_name") ?: "Server"
+
+        val openRecordAction = View.OnClickListener {
+            val recordIntent = Intent(this@ChatActivity, ChannelRecordActivity::class.java).apply {
+                putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, chatName)
+                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_ID, communityId)
+                putExtra(ChannelRecordActivity.EXTRA_COMMUNITY_NAME, communityName)
+                putExtra(ChannelRecordActivity.EXTRA_INITIAL_TAB, 0)
+            }
+            startActivity(recordIntent)
+        }
 
         findViewById<TextView>(R.id.chat_title).apply {
             text = chatName
-            setOnClickListener {
-                val recordIntent = Intent(this@ChatActivity, ChannelRecordActivity::class.java).apply {
-                    putExtra(ChannelRecordActivity.EXTRA_CHANNEL_NAME, chatName)
-                }
-                startActivity(recordIntent)
-            }
+            setOnClickListener(openRecordAction)
         }
+        findViewById<View>(R.id.btn_channel_members)?.setOnClickListener(openRecordAction)
         findViewById<TextView>(R.id.chat_back).setOnClickListener { finish() }
 
         tvStatus = findViewById(R.id.chat_status)
-        findViewById<View>(R.id.layout_title_status).setOnClickListener {
+        tvStatus.setOnClickListener {
             showServerConfigDialog()
         }
 
@@ -84,7 +105,7 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
         rvChat.layoutManager = LinearLayoutManager(this).apply { stackFromEnd = true }
         rvChat.adapter = chatAdapter
 
-        val savedMessages = ChatMessageStore.getMessages(this, chatName)
+        val savedMessages = ChatMessageStore.getMessages(this, storageChatKey)
         if (savedMessages.isNotEmpty()) {
             chatAdapter.setMessages(savedMessages)
             rvChat.scrollToPosition(chatAdapter.itemCount - 1)
@@ -102,7 +123,7 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
                     senderName = if (isFromSender) currentUserName else chatName.removePrefix("#").trim().ifEmpty { "User" }
                 )
                 chatAdapter.add(newMsg)
-                ChatMessageStore.saveMessage(this, chatName, newMsg)
+                ChatMessageStore.saveMessage(this, storageChatKey, newMsg)
                 rvChat.scrollToPosition(chatAdapter.itemCount - 1)
             }
         }
@@ -165,7 +186,7 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
                         showCustomUrlDialog(currentUrl)
                     }
                     5 -> {
-                        ChatMessageStore.clearMessages(this, chatName)
+                        ChatMessageStore.clearMessages(this, storageChatKey)
                         chatAdapter.setMessages(emptyList())
                         Toast.makeText(this, "Chat history cleared", Toast.LENGTH_SHORT).show()
                     }
@@ -214,7 +235,7 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
             senderName = currentUserName
         )
         chatAdapter.add(msg)
-        ChatMessageStore.saveMessage(this, chatName, msg)
+        ChatMessageStore.saveMessage(this, storageChatKey, msg)
         rvChat.scrollToPosition(chatAdapter.itemCount - 1)
         etMessage.text.clear()
 
@@ -255,7 +276,7 @@ class ChatActivity : AppCompatActivity(), ChatWebSocketCallback {
                 senderName = sender
             )
             chatAdapter.add(msg)
-            ChatMessageStore.saveMessage(this@ChatActivity, chatName, msg)
+            ChatMessageStore.saveMessage(this@ChatActivity, storageChatKey, msg)
             rvChat.scrollToPosition(chatAdapter.itemCount - 1)
         }
     }

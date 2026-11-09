@@ -3,6 +3,8 @@ package com.example.yappy
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,6 +15,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.yappy.adapter.MemberAdapter
+import com.example.yappy.model.ServerMember
+import com.example.yappy.storage.ServerMemberStore
 
 class ChannelRecordActivity : AppCompatActivity() {
 
@@ -36,6 +43,8 @@ class ChannelRecordActivity : AppCompatActivity() {
     private lateinit var viewLinks: View
     private lateinit var viewFiles: View
 
+    private lateinit var memberAdapter: MemberAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,12 +63,14 @@ class ChannelRecordActivity : AppCompatActivity() {
         val communityName = intent.getStringExtra(EXTRA_COMMUNITY_NAME) ?: "Server"
         val initialTab = intent.getIntExtra(EXTRA_INITIAL_TAB, 0)
 
-        findViewById<TextView>(R.id.tv_channel_name)?.text = channelName.removePrefix("#").trim()
+        val cleanName = channelName.removePrefix("#").trim()
+        findViewById<TextView>(R.id.tv_channel_name)?.text = "# $cleanName"
+        findViewById<TextView>(R.id.tv_channel_type)?.text = if (communityName.isNotBlank() && communityName != "Server") "$communityName • Text Channel" else "Text Channel"
 
         bindViews()
         setupTabClicks()
-        setupHeaderActions(channelName, communityId, communityName)
-        setupTabInteractions(communityId, communityName)
+        setupHeaderActions(cleanName, communityId, communityName)
+        setupTabInteractions(communityId, communityName, cleanName)
 
         selectTab(initialTab.coerceIn(0, 4))
     }
@@ -127,15 +138,16 @@ class ChannelRecordActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.btn_notification)?.setOnClickListener {
-            Toast.makeText(this, "Channel notifications enabled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Channel notifications enabled for #$channelName", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<ImageView>(R.id.btn_settings)?.setOnClickListener {
-            Toast.makeText(this, "Channel settings", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Channel settings for #$channelName", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setupTabInteractions(communityId: String, communityName: String) {
+    private fun setupTabInteractions(communityId: String, communityName: String, channelName: String) {
+        // Setup Server / Invite shortcut
         viewMembers.findViewById<View>(R.id.card_setup_server)?.setOnClickListener {
             val intent = Intent(this, SetUpFinish::class.java).apply {
                 putExtra(homescreen.EXTRA_COMMUNITY_ID, communityId)
@@ -144,14 +156,68 @@ class ChannelRecordActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        viewMembers.findViewById<View>(R.id.card_member_item)?.setOnClickListener {
-            val memberName = viewMembers.findViewById<TextView>(R.id.tv_member_name)?.text ?: "Member"
-            Toast.makeText(this, "$memberName is active in #welcome-and-rules", Toast.LENGTH_SHORT).show()
+        // Initialize Members RecyclerView
+        val rvMembers = viewMembers.findViewById<RecyclerView>(R.id.rv_members)
+        val tvEmpty = viewMembers.findViewById<TextView>(R.id.tv_empty_members)
+        val etSearch = viewMembers.findViewById<EditText>(R.id.et_search_members)
+
+        memberAdapter = MemberAdapter { member ->
+            showMemberProfileDialog(member)
         }
+
+        rvMembers?.layoutManager = LinearLayoutManager(this)
+        rvMembers?.adapter = memberAdapter
+
+        // Load members from store (real joined accounts, zero fake accounts)
+        val membersList = ServerMemberStore.getMembers(this, communityId, communityName)
+        memberAdapter.submitList(membersList)
+        tvEmpty?.visibility = if (memberAdapter.isEmpty()) View.VISIBLE else View.GONE
+
+        // Wire search filter
+        etSearch?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val q = s?.toString().orEmpty()
+                memberAdapter.filter(q)
+                tvEmpty?.visibility = if (memberAdapter.isEmpty()) View.VISIBLE else View.GONE
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         viewThreads.findViewById<View>(R.id.btn_create_thread)?.setOnClickListener {
             showCreateThreadDialog()
         }
+    }
+
+    private fun showMemberProfileDialog(member: ServerMember) {
+        val statusText = if (member.isOnline) "🟢 Online" else "⚪ Offline"
+        val roleBadge = when (member.role.uppercase()) {
+            "OWNER" -> "👑 Server Owner"
+            "ADMIN" -> "⭐ Admin"
+            "BOT" -> "🤖 System Bot"
+            else -> "Member"
+        }
+
+        val details = StringBuilder()
+            .append("Handle: ").append(member.handle).append("\n")
+            .append("User ID: #").append(member.id).append("\n")
+            .append("Role: ").append(roleBadge).append("\n")
+            .append("Status: ").append(statusText).append("\n")
+            .append(member.joinedAt)
+
+        AlertDialog.Builder(this)
+            .setTitle(member.username)
+            .setMessage(details.toString())
+            .setPositiveButton("Message") { _, _ ->
+                val chatIntent = Intent(this, ChatActivity::class.java).apply {
+                    putExtra(ChatActivity.EXTRA_CHAT_NAME, member.username)
+                    putExtra(ChatActivity.EXTRA_LAST_MESSAGE, "Hey ${member.username}!")
+                    putExtra(ChatActivity.EXTRA_IS_MINE, false)
+                }
+                startActivity(chatIntent)
+            }
+            .setNegativeButton("Close", null)
+            .show()
     }
 
     private fun showCreateThreadDialog() {
